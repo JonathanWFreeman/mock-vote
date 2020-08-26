@@ -29,16 +29,19 @@ const PartyLogo = styled.img`
 
 const Party = (props) => {
   return (
-    <FlexContainer>
-    <PartyContainer>
-      <h2>Democrat</h2>
-      <PartyLogo src={require('../images/democrat-logo.png')} alt=""/>
-    </PartyContainer>
-    <PartyContainer>
-      <h2>Republican</h2>
-      <PartyLogo src={require('../images/republican-logo.png')} alt=""/>
-    </PartyContainer>
-    </FlexContainer>
+    <>
+      <h2>Choose your party!</h2>
+      <FlexContainer>
+        <PartyContainer>
+          <h2>Democrat</h2>
+          <PartyLogo src={require('../images/democrat-logo.png')} alt=""/>
+        </PartyContainer>
+        <PartyContainer>
+          <h2>Republican</h2>
+          <PartyLogo src={require('../images/republican-logo.png')} alt=""/>
+        </PartyContainer>
+      </FlexContainer>
+    </>
   )
 }
 

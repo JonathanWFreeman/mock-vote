@@ -1,18 +1,30 @@
-const db = {
+export const db = {
   party: 
     {
+      democrat: 1,
+      republican: 1,
     },
   candidates: 
     {
       biden: {
+        democrat: 1,
       },
       trump: {
+        republican: 1,
       },
     },
   states: 
     {
+      NY: {
+        democrat: 1,
+        total: 1,
+      },
+      TX: {
+        republican: 1,
+        total: 1,
+      }
     },
-  total: 0,
+  total: 2,
 }
 
 export function addVote(party, candidate, state) {

@@ -10,8 +10,10 @@ import Results from './components/Results'
 
 
 const App = () => {
-  addVote('republican', 'trump', 'texas');
-  addVote('democrat', 'biden', 'oklahoma');
+  addVote('republican', 'trump', 'TX');
+  addVote('republican', 'biden', 'OK');
+  addVote('democrat', 'biden', 'OK');
+  addVote('democrat', 'biden', 'CA');
 
   return (
     <>
