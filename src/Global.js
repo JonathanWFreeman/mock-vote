@@ -1,15 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
-import { normalize } from 'styled-normalize';
 import { Above } from './components/utilities';
 
 export const SiteWidth = '80vw';
 export const BackgroundColor = '#333333';
-export const PrimaryColor = '#03E9F4';
-export const SecondaryColor = '#FF0700';
-export const AltColor = '#1B5AF7';
+export const RepublicanRed = '#e81b23';
+export const DemocratBlue = '#00aef3';
+export const BattlegroundPurple = '#9100ff';
 
 const GlobalStyle = createGlobalStyle`
-${'' /* ${normalize}; */}
 
 html {
   box-sizing: border-box;
@@ -40,17 +38,17 @@ p {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
 h2 {
-  margin: 40px 0;
+  margin: 20px 0;
   font-size: 2rem;
 }
 
 h3 {
-  margin: 40px 0;
-  font-size: min(max(1rem, 5vw), 2rem);
+  margin: 20px 0;
+  font-size: min(max(1rem, 5vw), 1.5rem);
 }
 
 img {
