@@ -2,24 +2,13 @@ import React from 'react'
 import styled from 'styled-components';
 // import PropTypes from 'prop-types'
 
+import {ImageContainer} from './elements';
+import {DemocratBlue, RepublicanRed} from '../Global';
+
 const FlexContainer = styled.section`
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-`;
-
-const CandidateContainer = styled.div`
-  ${'' /* width: 50%; */}
-`;
-
-const CandidateImage = styled.img`
-  transition: .2s;
-  filter: grayscale(.4);
-  ${'' /* width: 50%; */}
-  :hover {
-    transform: scale(1.02,1.02);
-    filter: grayscale(0);
-  }
 `;
 
 const Candidate = (props) => {
@@ -27,14 +16,8 @@ const Candidate = (props) => {
     <>
       <h2>Choose your candidate!</h2>
       <FlexContainer>
-        <CandidateContainer>
-          <h3>Joe Biden</h3>
-          <CandidateImage src={require('../images/joe-biden.jpg')} alt=""/>
-        </CandidateContainer> 
-        <CandidateContainer>
-          <h3>Donald Trump</h3>
-          <CandidateImage src={require('../images/donald-trump.jpg')} alt=""/>
-        </CandidateContainer> 
+        <ImageContainer img={'joe-biden.jpg'} alt={'Joe Biden'} title={'Joe Biden'} color={DemocratBlue} />
+        <ImageContainer img={'donald-trump.jpg'} alt={'Donald Trump'} title={'Donald Trump'} color={RepublicanRed} />
       </FlexContainer>
     </>
   )
