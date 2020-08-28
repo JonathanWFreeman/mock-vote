@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
-import {db} from '../helpers';
+import {db, returnElectoralVotes} from '../helpers';
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from '../Global';
 // import PropTypes from 'prop-types'
 
@@ -25,14 +25,9 @@ const mapHandler = (event) => {
   alert(event.target.dataset.name);
 };
 
-const returnVote = (demo, rep) => {
-
-  if(demo === undefined) demo = 0;
-  if(rep === undefined) rep = 0;
-
-
-  if(demo > rep) return DemocratBlue;
-  if(rep > demo) return RepublicanRed;
+const returnMapColor = (biden, trump) => {
+  if(biden > trump) return DemocratBlue;
+  if(trump > biden) return RepublicanRed;
   return BattlegroundPurple;
 }
 
@@ -47,12 +42,14 @@ const statesCustomConfig = (db) => {
     // }
   };
 
+  // loop through states
   for(const [state, value] of Object.entries(db.states)) {
-    const demo = value.democrat;
-    const rep = value.republican;
 
+    const biden = value.biden ? value.biden.total : 0;
+    const trump = value.trump ? value.trump.total : 0;
+    
     map[state] = {
-      fill: returnVote(demo, rep),
+      fill: returnMapColor(biden, trump),
     };
   }
 
@@ -60,17 +57,31 @@ const statesCustomConfig = (db) => {
 };
 
 const Results = (props, event) => {
+  returnElectoralVotes();
   return (
     <>
       <section>
-          <h2>Candidate</h2>
+        <h2>Results</h2>
+        <h2>Popular</h2>
         <ResultDiv>
-          <h3>Biden: </h3>
-          <p>50%</p>
+          <h3>Biden:</h3>
+          <p>{db.candidates.biden.total}</p>
         </ResultDiv>
         <ResultDiv>
-          <h3>Trump: </h3>
-          <p>50%</p>
+          <h3>Trump:</h3>
+          <p>{db.candidates.trump.total}</p>
+        </ResultDiv>
+      </section>
+      <section>
+      <h2>Electoral</h2>
+      <p>(270 to win)</p>
+        <ResultDiv>
+          <h3>Biden:</h3>
+          <p>{db.electoralCollege.biden}</p>
+        </ResultDiv>
+        <ResultDiv>
+          <h3>Trump:</h3>
+          <p>{db.electoralCollege.trump}</p>
         </ResultDiv>
       </section>
       <MapSection>
