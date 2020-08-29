@@ -1,4 +1,4 @@
 import Header from './Header';
-import ImageContainer from './ImageContainer';
+import ImageElement from './ImageElement';
 
-export {Header, ImageContainer};
+export {Header, ImageElement};
