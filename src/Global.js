@@ -9,6 +9,37 @@ export const BattlegroundPurple = '#9100ff';
 
 const GlobalStyle = createGlobalStyle`
 
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+
+.app {
+	text-align: center;
+	background-color: #282c34;
+	min-height: 100vh;
+	/* display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center; */
+	/* font-size: calc(10px + 2vmin); */
+	color: white;
+}
+
+.content {
+	/* text-align: center; */
+	/* min-height: 100vh; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 html {
   box-sizing: border-box;
   ${'' /* font-size: 16px; */}
