@@ -19,26 +19,7 @@ const GlobalStyle = createGlobalStyle`
 	background: transparent;
 }
 
-.app {
-	text-align: center;
-	background-color: #282c34;
-	min-height: 100vh;
-	/* display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center; */
-	/* font-size: calc(10px + 2vmin); */
-	color: white;
-}
 
-.content {
-	/* text-align: center; */
-	/* min-height: 100vh; */
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
 
 html {
   box-sizing: border-box;
