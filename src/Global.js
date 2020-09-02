@@ -19,8 +19,6 @@ const GlobalStyle = createGlobalStyle`
 	background: transparent;
 }
 
-
-
 html {
   box-sizing: border-box;
   ${'' /* font-size: 16px; */}
@@ -46,7 +44,7 @@ body{
 }
 
 p {
-  line-height: 1rem;
+  line-height: 2rem;
 }
 
 h1 {
