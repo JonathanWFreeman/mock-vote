@@ -1,15 +1,9 @@
 import React from 'react'
-import styled from 'styled-components';
 // import PropTypes from 'prop-types'
 
 import {ImageElement} from './elements';
+import {FlexContainer} from './utilities';
 import {DemocratBlue, RepublicanRed} from '../Global';
-
-const FlexContainer = styled.section`
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
-`;
 
 const Candidate = (props) => {
   return (
