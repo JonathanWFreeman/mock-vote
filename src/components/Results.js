@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
-import {db, returnElectoralVotes} from '../helpers';
+import {db} from '../testDb';
+import {returnElectoralVotes} from '../helpers';
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from '../Global';
 // import PropTypes from 'prop-types'
 
@@ -21,8 +22,9 @@ const MapSection = styled.section`
   }
 `;
 
-const mapHandler = (event) => {
-  alert(event.target.dataset.name);
+const mapHandler = (event, setState) => {
+  const state = event.target.dataset.name;
+  setState(state);
 };
 
 const returnMapColor = (biden, trump) => {
@@ -31,7 +33,7 @@ const returnMapColor = (biden, trump) => {
   return BattlegroundPurple;
 }
 
-const statesCustomConfig = (db) => {
+const statesCustomConfig = () => {
   let map = {
     // NJ: {
     //   fill: "navy",
@@ -56,8 +58,47 @@ const statesCustomConfig = (db) => {
   return map;
 };
 
+const StateData = ({clickedState}) => {
+  const results = [db.states[clickedState]];
+  console.log(clickedState);
+  const items = [];
+  let index = 0;
+
+ if(clickedState === 'DC'){
+    return null;
+  } else if(results[0] === undefined) {
+    items.push(<p key={index}>No votes yet.</p>)
+  } else {
+    for(const [candidate, value] of Object.entries(results[0])) {
+      // console.log(candidate + ':')
+      if(candidate !== 'total') items.push(<h4 key={index}>{candidate}</h4>);
+      index++;
+      for(const [party, votes] of Object.entries(value)) {
+        // console.log(party + ':' + votes);
+        if(party !== 'total') items.push(<p key={index}>{party}: {votes}</p>);
+        index++;
+      }
+    };
+  }
+
+  
+  return(
+    <>
+      <div>{clickedState}</div>
+      <div style={{textTransform: 'capitalize'}}>
+        {items.length === 0 ? 
+          <p>None</p>:items}
+      </div>
+    </>
+  );
+}
+
 const Results = (props, event) => {
+  
+  const [state, setState] = useState('');
+
   returnElectoralVotes();
+
   return (
     <>
       <section>
@@ -84,8 +125,11 @@ const Results = (props, event) => {
           <p>{db.electoralCollege.trump}</p>
         </ResultDiv>
       </section>
+      <section>
+        {state ? <StateData clickedState={state} /> : null}
+      </section>
       <MapSection>
-        <USAMap customize={statesCustomConfig(db)} onClick={mapHandler} />
+        <USAMap title='US Voting Map' customize={statesCustomConfig()} onClick={(event) => mapHandler(event, setState)} />
       </MapSection>
     </>
   )
