@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
 html {
   box-sizing: border-box;
   ${'' /* font-size: 16px; */}
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 1.5vmin);
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -39,18 +39,18 @@ body{
   background-color: ${BackgroundColor};
   color: #FFF;
   ${Above.small`
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   `}
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 p {
-  line-height: 2rem;
+  line-height: 1rem;
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
 }
 
 h2 {
@@ -60,7 +60,8 @@ h2 {
 
 h3 {
   margin: 20px 0;
-  font-size: min(max(1rem, 5vw), 1.5rem);
+  ${'' /* font-size: min(max(1rem, 5vw), 1.5rem); */}
+  font-size: 1.5rem;
 }
 
 img {

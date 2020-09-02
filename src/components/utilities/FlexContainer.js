@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import { Below } from './breakpoints';
 
 const Container = styled.section`
-${Below.small`
+  ${'' /* ${Below.small`
     display: block;
-  `}
+  `} */}
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   width: 100%;
 `;

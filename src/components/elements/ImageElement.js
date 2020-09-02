@@ -10,14 +10,13 @@ const Image = styled.img`
   transition: .2s;
   filter: grayscale(.4);
   border-radius: 10px;
-  ${'' /* width: 50%; */}
+  width: 70%;
   :hover {
     transform: scale(1.02,1.02);
     filter: grayscale(0);
     box-shadow: 0 0 150px ${({color}) => color}80;
   }
 `;
-
 
 const ImageElement = props => {
   const {img, alt, title, color} = props;
