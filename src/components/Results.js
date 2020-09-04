@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
 import {db} from '../testDb';
-import {returnElectoralVotes} from '../helpers';
-import {RepublicanRed, DemocratBlue, BattlegroundPurple} from '../Global';
+import {returnElectoralVotes, mapHandler, statesCustomConfig} from '../helpers';
+import {useWindowDimensions, StateData} from './utilities'
 // import PropTypes from 'prop-types'
 
 const ResultDiv = styled.div`
@@ -13,6 +13,7 @@ const ResultDiv = styled.div`
 `;
 
 const MapSection = styled.section`
+  margin: 5% 0 0;
   path {
     pointer-events: all;
   }
@@ -20,116 +21,65 @@ const MapSection = styled.section`
     opacity: 0.50;
     cursor: pointer;
   }
+  svg {
+    width: 100%;
+  }
 `;
 
-const mapHandler = (event, setState) => {
-  const state = event.target.dataset.name;
-  setState(state);
-};
+const StateResults = styled.section`
+  position: fixed;
+  top: 0;
+  background: #000;
+  width: 100%;
+  padding: 1% 2%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #FFF;
+`;
 
-const returnMapColor = (biden, trump) => {
-  if(biden > trump) return DemocratBlue;
-  if(trump > biden) return RepublicanRed;
-  return BattlegroundPurple;
-}
-
-const statesCustomConfig = () => {
-  let map = {
-    // NJ: {
-    //   fill: "navy",
-    //   clickHandler: (event) => console.log('Custom handler for NJ', event.target.dataset)
-    // },
-    // NY: {
-    //   fill: "#CC0000"
-    // }
-  };
-
-  // loop through states
-  for(const [state, value] of Object.entries(db.states)) {
-
-    const biden = value.biden ? value.biden.total : 0;
-    const trump = value.trump ? value.trump.total : 0;
-    
-    map[state] = {
-      fill: returnMapColor(biden, trump),
-    };
-  }
-
-  return map;
-};
-
-const StateData = ({clickedState}) => {
-  const results = [db.states[clickedState]];
-  console.log(clickedState);
-  const items = [];
-  let index = 0;
-
- if(clickedState === 'DC'){
-    return null;
-  } else if(results[0] === undefined) {
-    items.push(<p key={index}>No votes yet.</p>)
-  } else {
-    for(const [candidate, value] of Object.entries(results[0])) {
-      // console.log(candidate + ':')
-      if(candidate !== 'total') items.push(<h4 key={index}>{candidate}</h4>);
-      index++;
-      for(const [party, votes] of Object.entries(value)) {
-        // console.log(party + ':' + votes);
-        if(party !== 'total') items.push(<p key={index}>{party}: {votes}</p>);
-        index++;
-      }
-    };
-  }
-
-  
-  return(
-    <>
-      <div>{clickedState}</div>
-      <div style={{textTransform: 'capitalize'}}>
-        {items.length === 0 ? 
-          <p>None</p>:items}
-      </div>
-    </>
-  );
-}
+const CandidateResults = styled.section`
+  display: flex;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+`;
 
 const Results = (props, event) => {
   
   const [state, setState] = useState('');
-
+  const { width } = useWindowDimensions();
   returnElectoralVotes();
 
   return (
     <>
-      <section>
-        <h2>Results</h2>
-        <h2>Popular</h2>
-        <ResultDiv>
-          <h3>Biden:</h3>
-          <p>{db.candidates.biden.total}</p>
-        </ResultDiv>
-        <ResultDiv>
-          <h3>Trump:</h3>
-          <p>{db.candidates.trump.total}</p>
-        </ResultDiv>
-      </section>
-      <section>
-      <h2>Electoral</h2>
-      <p>(270 to win)</p>
-        <ResultDiv>
-          <h3>Biden:</h3>
-          <p>{db.electoralCollege.biden}</p>
-        </ResultDiv>
-        <ResultDiv>
-          <h3>Trump:</h3>
-          <p>{db.electoralCollege.trump}</p>
-        </ResultDiv>
-      </section>
-      <section>
-        {state ? <StateData clickedState={state} /> : null}
-      </section>
+      <h2>Results</h2>
+      <CandidateResults>
+        <div>
+          <h2>Popular</h2>
+          <ResultDiv>
+            <h3>Biden: {db.candidates.biden.total}</h3>
+          </ResultDiv>
+          <ResultDiv>
+            <h3>Trump: {db.candidates.trump.total}</h3>
+          </ResultDiv>
+        </div>
+        <div>
+        <h2>Electoral</h2>
+          <ResultDiv>
+            <h3>Biden: {db.electoralCollege.biden}</h3>
+          </ResultDiv>
+          <ResultDiv>
+            <h3>Trump: {db.electoralCollege.trump}</h3>
+          </ResultDiv>
+        </div>
+      </CandidateResults>
+      {state ? 
+        <StateResults>
+          <StateData clickedState={state} setState={setState} /> 
+        </StateResults>
+      : null}
       <MapSection>
-        <USAMap title='US Voting Map' customize={statesCustomConfig()} onClick={(event) => mapHandler(event, setState)} />
+        <USAMap title='US Voting Map' customize={statesCustomConfig()} onClick={(event) => mapHandler(event, setState)} width={width} height={width / 2.5}/>
       </MapSection>
     </>
   )
