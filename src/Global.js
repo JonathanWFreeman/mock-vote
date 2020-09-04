@@ -45,6 +45,7 @@ body{
 
 p {
   line-height: 2rem;
+  font-size: 1rem;
 }
 
 h1 {
@@ -52,14 +53,20 @@ h1 {
 }
 
 h2 {
-  margin: 20px 0;
+  margin: 0 0 20px;
   font-size: 2rem;
 }
 
 h3 {
-  margin: 20px 0;
+  ${'' /* margin: 20px 0; */}
   ${'' /* font-size: min(max(1rem, 5vw), 1.5rem); */}
   font-size: 1.5rem;
+}
+
+h4 {
+  ${'' /* margin: 20px 0; */}
+  ${'' /* font-size: min(max(1rem, 5vw), 1.5rem); */}
+  font-size: 1.2rem;
 }
 
 img {
