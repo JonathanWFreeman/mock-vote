@@ -1,7 +1,8 @@
 import FlexContainer from './FlexContainer';
-import StateData from './StateData';
+import StateData from '../elements/StateData';
 
-export * from './breakpoints';
-export * from './hooks';
+export * from './Breakpoints';
+export * from './Hooks';
+export * from './Location';
 
 export {FlexContainer, StateData};

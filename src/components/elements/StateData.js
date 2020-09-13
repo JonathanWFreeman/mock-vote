@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types'
 
-import {db} from '../../testDb';
-
 const State = styled.p`
   border: 3px solid #FFF;
   border-radius: 50%;
@@ -34,7 +32,7 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
-const StateData = ({clickedState, setState}) => {
+const StateData = ({clickedState, setState, db}) => {
   const results = [db.states[clickedState]];
   const returnResults = [];
   let voteTotals = [];
@@ -80,6 +78,7 @@ const StateData = ({clickedState, setState}) => {
 Results.propTypes = {
   clickedState: PropTypes.string,
   setState: PropTypes.string,
+  db: PropTypes.object,
 }
 
 export default StateData;
