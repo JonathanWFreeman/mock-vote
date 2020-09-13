@@ -1,4 +1,6 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
+
 import { FlexContainer } from './utilities/';
 import { ImageElement } from './elements';
 // import PropTypes from 'prop-types'
@@ -8,8 +10,9 @@ const Party = (props) => {
     <>
       <h2>Choose your party!</h2>
       <FlexContainer>
-          <ImageElement img={'democrat-logo.png'} alt={'Democrat Logo'} title={'Democrat'}/>
-          <ImageElement img={'republican-logo.png'} alt={'Republican Logo'} title={'Republican'}/>
+          <Link to='/submit'><ImageElement img={'democrat-logo.png'} alt={'Democrat Logo'} title={'Democrat'} type={'party'} choice={'democrat'}/></Link>
+          <Link to='/submit'><ImageElement img={'republican-logo.png'} alt={'Republican Logo'} title={'Republican'} type={'party'} choice={'republican'}/></Link>
+          <Link to='/submit'><ImageElement img={'republican-logo.png'} alt={'Independent Logo'} title={'Independent'} type={'party'} choice={'independent'}/></Link>
       </FlexContainer>
     </>
   )
