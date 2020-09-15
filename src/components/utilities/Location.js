@@ -28,7 +28,7 @@ export async function setLocation(setVote, setErr) {
 }
 
 async function fetchLocation(setErr) {
-  const url = `https://api.ipdata.co/?api-key=${process.env.REACT_APP_IPDATA_API_KEY}`;
+  const url = `http://ip-api.com/json/`;
   // const ress = await fetch(url)
   //   .then(res => {
   //     console.log(res);
@@ -39,11 +39,12 @@ async function fetchLocation(setErr) {
   //   });
   const res = await fetch(url);
   const results = await res.json();
-  if(res.status === 200){
+  // console.log(results);
+  if(results.status === 'success'){
     // console.log(results);
     // console.log(results.region_code);
     // setErr(true);
-    return results.region_code;
+    return results.region;
   } else {
     console.log(results);
     console.log(results.message)
