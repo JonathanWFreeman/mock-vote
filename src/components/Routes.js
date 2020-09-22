@@ -14,13 +14,9 @@ const Questions = () => {
   const [vote, setVote] = useContext(VoteContext);
   const [err, setErr] =  useState(false);
 
-  console.log(vote);
-  
   useEffect(() => {
     setLocation(setVote, setErr);
   }, [setErr, setVote]);
-
-  console.log(err);
 
   return (
     <>
@@ -32,6 +28,7 @@ const Questions = () => {
           <Route path='/party' component={Party}/>
           <Route path='/submit' component={Submit}/>
           <Route path='/results' component={Results}/>
+          {/* <Route path='/' component={Results}/> */}
           {/* <Candidate />
           <Party />
           <Submit /> */}
