@@ -1,12 +1,13 @@
 import React from 'react';
 import GlobalStyle from './Global';
 import styled from 'styled-components';
+import {Route, BrowserRouter as Router} from 'react-router-dom';
 
 import {addVote} from './helpers';
 import {Header} from './components/elements'
-import Candidate from './components/Candidate'
-import Party from './components/Party'
+import Routes from './components/Routes';
 import Results from './components/Results'
+import {Context} from './components/context'
 
 const Content = styled.section`
 	display: flex;
@@ -14,7 +15,8 @@ const Content = styled.section`
 	align-items: center;
   align-content: center;
 	justify-content: center;
-  padding: 0 5%;
+  padding: 3% 5%;
+  min-height: 90vh;
 `;
 
 const Wrapper = styled.section`
@@ -29,24 +31,32 @@ const Wrapper = styled.section`
   /* font-size: calc(10px + 2vmin); */
 `;
 
-const App = () => {
-  addVote('republican', 'trump', 'TX');
-  addVote('republican', 'biden', 'OK');
-  addVote('democrat', 'biden', 'OK');
-  addVote('republican', 'trump', 'OK');
-  addVote('democrat', 'trump', 'FL');
-  addVote('democrat', 'trump', 'FL');
-  addVote('democrat', 'biden', 'OK');
-  addVote('democrat', 'biden', 'CA');
+// TODO: Put DB in state
+// TODO: Add submission / reset
+// TODO: Add routing
+// TODO: Add vote to state
+// TODO: Maybe add confirmation?
 
+const App = () => {
+  // addVote({state: 'TX', candidate: 'trump', party: 'republican'});
+  // addVote({party: 'republican', candidate: 'trump', state: 'TX'});
+  // addVote({party: 'republican', candidate: 'biden', state: 'OK'});
+  // addVote({party: 'democrat', candidate: 'biden', state: 'OK'});
+  // addVote({party: 'republican', candidate: 'trump', state: 'OK'});
+  // addVote({party: 'democrat', candidate: 'trump', state: 'FL'});
+  // addVote({party: 'democrat', candidate: 'trump', state: 'FL'});
+  // addVote({party: 'democrat', candidate: 'biden', state: 'OK'});
+  // addVote({party: 'democrat', candidate: 'biden', state: 'CA'});
+  
+  
   return (
     <>
       <Wrapper>
         <Header />
         <Content>
-          <Candidate />
-          {/* <Party /> */}
-          {/* <Results /> */}
+          <Router>
+            <Route exact path='/' component={Routes} />
+          </Router>
         </Content>
       </Wrapper>
       <GlobalStyle />

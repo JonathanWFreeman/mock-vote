@@ -3,23 +3,28 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types'
 
 const State = styled.p`
-  border: 3px solid #FFF;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100px;
-  max-width: 10vw;
-  max-height: 10vw;
+  border: 3px solid #FFF;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px; 
+`;
+
+const StateContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10vw;
 `;
 
 const Results = styled.div`
   text-transform: capitalize;
   display: flex;
-  width: 100%;
   justify-content: center;
+  width: 100%;
+  max-width: 75vw;
   div:first-child {
     margin: 0 4%;
   }
@@ -34,6 +39,7 @@ const CloseButton = styled.div`
 
 const StateData = ({clickedState, setState, db}) => {
   const results = [db.states[clickedState]];
+  console.log(db)
   const returnResults = [];
   let voteTotals = [];
   let resultsIndex = 0;
@@ -67,7 +73,9 @@ const StateData = ({clickedState, setState, db}) => {
   return(
     <>
       <CloseButton onClick={() => setState(null)}>X</CloseButton>
-      <State>{clickedState}</State>
+      <StateContainer>
+        <State>{clickedState}</State>
+      </StateContainer>
       <Results>
         {returnResults}
       </Results>
