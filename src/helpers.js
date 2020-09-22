@@ -1,55 +1,86 @@
-import {electoralCollege, db} from './testDb';
+import {electoralCollege} from './testDb';
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from './Global';
 
+export async function setFirebaseData(firebase, {party, candidate, state}) {
+  const parties = firebase.parties().doc(party);
+  const candidates = firebase.candidates().doc(candidate);
+  const states = firebase.states().doc(state);
+  const total = firebase.total().doc('total');
+  const batch = firebase.db.batch();
 
-export function addVote(party, candidate, state) {
+  console.log(firebase);
+  // const fb = firebase.db.collection('test').doc('test');
+  // fb.update({test2: firebase.increment()})
+  // console.log(fb);
+  
+  
   // party
-  db.party[party] = db.party[party] + 1 || 1;
+  batch.set(parties, {[party]: firebase.increment()}, {merge:true})
   
   // candidate
-  db.candidates[candidate][party] = db.candidates[candidate][party] + 1 || 1;
-  db.candidates[candidate].total = db.candidates[candidate].total + 1 || 1;
+  batch.set(candidates, {
+    [party]: firebase.increment(),
+    total: firebase.increment()
+    }, {merge:true})
   
   // state
-  if(!db.states[state]) {
-    db.states[state] = {};
-  }
-  if(!db.states[state][candidate]) {
-    db.states[state][candidate] = {};
-  }
-
-  db.states[state][candidate][party] = db.states[state][candidate][party] + 1 || 1;
-  db.states[state][candidate].total = db.states[state][candidate].total + 1 || 1;
-  db.states[state].total = db.states[state].total + 1 || 1;
+  batch.set(states, {
+    [candidate]: {
+      [party]: firebase.increment(),
+      total: firebase.increment(),
+    },
+    total: firebase.increment()
+  }, {merge:true})
   
   // total
-  db.total++;
-  // console.log(db);
-}
+  batch.set(total, {total: firebase.increment()}, {merge:true})
+  // batch.set(ec, electoralCollege)
 
-export function returnElectoralVotes() {
-  
-  let bidenEV = 0;
-  let trumpEV = 0;
-  
-  for(const [state, value] of Object.entries(db.states)) {
-    
-    //get state total votes
-    const biden = value.biden ? value.biden.total : 0;
-    const trump = value.trump ? value.trump.total : 0;
-    
-    //add EC votes
-    if(biden > trump) bidenEV += electoralCollege[state];
-    if(trump > biden) trumpEV += electoralCollege[state];
-    
-    // console.log(state, value);
+  // batch
+  try{
+    batch.commit();
+  }catch(err){
+    console.log(err);
+    // setErr(true)
   }
-
-  //set votes to db
-  db.electoralCollege.biden = bidenEV;
-  db.electoralCollege.trump = trumpEV;
 }
 
+export async function getFirebaseData(firebase, type, setDb) {
+  let arr = {}
+  type.forEach(async ref => {
+    const getData = await firebase[ref]().get();
+    for(let doc of getData.docs){
+      arr[doc.id] = doc.data()
+    }
+    setDb(prev => ({...prev, [ref]: arr}));
+    arr = {}
+  })
+}
+
+export function returnElectoralVotes(db) {
+  let bidenVotes = 0;
+  let trumpVotes = 0;
+
+  if(db.states){  
+    for(const [state, value] of Object.entries(db.states)) {
+      console.log(state)  
+      console.log(value)  
+      
+      //get state total votes
+      const biden = value.biden ? value.biden.total : 0;
+      const trump = value.trump ? value.trump.total : 0;
+
+      //add EC votes
+      if(biden > trump) bidenVotes += electoralCollege[state];
+      if(trump > biden) trumpVotes += electoralCollege[state];
+      
+      // console.log(state, value);
+    }
+
+    //set votes to db
+    return {biden: bidenVotes, trump: trumpVotes};
+  }
+}
 export const mapHandler = (event, setState) => {
   const state = event.target.dataset.name;
   setState(state);
@@ -61,7 +92,8 @@ const returnMapColor = (biden, trump) => {
   return BattlegroundPurple;
 }
 
-export const statesCustomConfig = () => {
+export const statesCustomConfig = (db) => {
+  console.log(db);
   let map = {
     // NJ: {
     //   fill: "navy",
@@ -85,3 +117,11 @@ export const statesCustomConfig = () => {
   
   return map;
 };
+
+export function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
