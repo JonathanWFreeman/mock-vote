@@ -28,7 +28,7 @@ export async function setLocation(setVote, setErr) {
 }
 
 async function fetchLocation(setErr) {
-  const url = `http://ip-api.com/json/`;
+  const url = `https://freegeoip.app/json/`;
   // const ress = await fetch(url)
   //   .then(res => {
   //     console.log(res);
@@ -37,17 +37,24 @@ async function fetchLocation(setErr) {
   //   .then(data => {
   //     console.log(data);
   //   });
-  const res = await fetch(url);
-  const results = await res.json();
   // console.log(results);
-  if(results.status === 'success'){
-    // console.log(results);
-    // console.log(results.region_code);
-    // setErr(true);
-    return results.region;
-  } else {
-    console.log(results);
-    console.log(results.message)
+  try{
+    const res = await fetch(url);
+    const results = await res.json();
+    console.log(results.region_code);
+    return results.region_code;
+  }catch(err){
+    console.log(err);
     setErr(true);
   }
+  // if(results.status === 'success'){
+  //   // console.log(results);
+  //   // console.log(results.region_code);
+  //   // setErr(true);
+  //   return results.region;
+  // } else {
+  //   console.log(results);
+  //   console.log(results.message)
+  //   setErr(true);
+  // }
 }
