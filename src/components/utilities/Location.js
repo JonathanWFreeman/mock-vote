@@ -22,12 +22,12 @@
 
 // inout().catch(e => console.log(e)); // User denied geolocation prompt. code = 1
 
-export async function setLocation(setVote, setErr) {
-  const region = await fetchLocation(setErr);
+export async function setLocation(setVote, setErr, setCountry) {
+  const region = await fetchLocation(setErr, setCountry);
   setVote(prevVote => ({...prevVote, state: region}));
 }
 
-async function fetchLocation(setErr) {
+async function fetchLocation(setErr, setCountry) {
   const url = `https://freegeoip.app/json/`;
   // const ress = await fetch(url)
   //   .then(res => {
@@ -41,11 +41,14 @@ async function fetchLocation(setErr) {
   try{
     const res = await fetch(url);
     const results = await res.json();
-    console.log(results.region_code);
+    setCountry(results.country_code)
     return results.region_code;
   }catch(err){
     console.log(err);
     setErr(true);
+    if(err === 'TypeError: Failed to fetch') {
+      console.log('booya');
+    }
   }
   // if(results.status === 'success'){
   //   // console.log(results);

@@ -12,16 +12,16 @@ import Login from './Login'
 
 const Questions = () => {
   const [vote, setVote] = useContext(VoteContext);
+  const [country, setCountry] = useState(null);
   const [err, setErr] =  useState(false);
 
   useEffect(() => {
-    setLocation(setVote, setErr);
+    setLocation(setVote, setErr, setCountry);
   }, [setErr, setVote]);
-
   return (
     <>
       {
-        err ? <Error /> :
+        err ? <Error country={country} /> :
         <Router>
           <Route exact path='/' component={Login} />
           <Route exact path='/candidate' component={Candidate}/>
