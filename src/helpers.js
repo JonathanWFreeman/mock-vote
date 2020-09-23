@@ -1,14 +1,13 @@
 import {electoralCollege} from './testDb';
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from './Global';
 
-export async function setFirebaseData(firebase, {party, candidate, state}) {
+export function setFirebaseData(firebase, {party, candidate, state}) {
   const parties = firebase.parties().doc(party);
   const candidates = firebase.candidates().doc(candidate);
   const states = firebase.states().doc(state);
   const total = firebase.total().doc('total');
   const batch = firebase.db.batch();
 
-  console.log(firebase);
   // const fb = firebase.db.collection('test').doc('test');
   // fb.update({test2: firebase.increment()})
   // console.log(fb);
@@ -63,8 +62,6 @@ export function returnElectoralVotes(db) {
 
   if(db.states){  
     for(const [state, value] of Object.entries(db.states)) {
-      console.log(state)  
-      console.log(value)  
       
       //get state total votes
       const biden = value.biden ? value.biden.total : 0;
@@ -73,8 +70,6 @@ export function returnElectoralVotes(db) {
       //add EC votes
       if(biden > trump) bidenVotes += electoralCollege[state];
       if(trump > biden) trumpVotes += electoralCollege[state];
-      
-      // console.log(state, value);
     }
 
     //set votes to db
@@ -93,7 +88,6 @@ const returnMapColor = (biden, trump) => {
 }
 
 export const statesCustomConfig = (db) => {
-  console.log(db);
   let map = {
     // NJ: {
     //   fill: "navy",
