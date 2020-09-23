@@ -1,7 +1,7 @@
 import {electoralCollege} from './testDb';
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from './Global';
 
-export function setFirebaseData(firebase, {party, candidate, state}) {
+export async function setFirebaseData(firebase, {party, candidate, state}) {
   const parties = firebase.parties().doc(party);
   const candidates = firebase.candidates().doc(candidate);
   const states = firebase.states().doc(state);
@@ -37,7 +37,7 @@ export function setFirebaseData(firebase, {party, candidate, state}) {
 
   // batch
   try{
-    batch.commit();
+    await batch.commit();
   }catch(err){
     console.log(err);
     // setErr(true)

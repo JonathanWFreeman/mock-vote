@@ -2,10 +2,10 @@ import React, {useState, useContext, useEffect, useRef} from 'react';
 import { useFirebase } from './firebase'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
-import {returnElectoralVotes, mapHandler, statesCustomConfig, getFirebaseData, isEmpty} from '../helpers';
+import {returnElectoralVotes, mapHandler, statesCustomConfig, getFirebaseData, setFirebaseData} from '../helpers';
 import {useWindowDimensions, Below} from './utilities'
 import {StateData} from './elements'
-import {DataContext} from './context'
+import {VoteContext, DataContext} from './context'
 // import PropTypes from 'prop-types'
 
 const ResultDiv = styled.div`
@@ -76,15 +76,20 @@ const Results = () => {
   const firebase = useFirebase();
   const {current:type} = useRef(['parties', 'candidates', 'states', 'total', 'electoralCollege'])
   
+  const [vote] = useContext(VoteContext);
+
+
   useEffect(() => {
     async function doStuff(){
+      // await wait(500);
+      await setFirebaseData(firebase, vote);
       await getFirebaseData(firebase, type, setDb);
-      await wait(2000);
     }
     doStuff();
-  }, [firebase, type])
-  
+  }, [firebase, type, vote])
   const ec = returnElectoralVotes(db);
+  // console.log(db)
+  // console.log(ec)
   return (
     <>
       {db.electoralCollege &&
@@ -128,7 +133,6 @@ const Results = () => {
                   sortedCollection.forEach(([key, value], index) => {
                     el.push(<h3 key={index}>{key}: {value}</h3>)
                   })
-                  console.log(el)
                   return (
                       <div key={index}>
                         {el}
@@ -143,7 +147,6 @@ const Results = () => {
                   sortedCollection.forEach(([key, value], index) => {
                     el.push(<p key={index}>{key}: {value}</p>)
                   })
-                  console.log(el)
                   return (
                       <div key={index}>
                         <h2>{doc}:</h2>
