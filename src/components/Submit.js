@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 
 import {addVote, setFirebaseData} from '../helpers';
 import {VoteContext, DataContext} from './context'
+import Error from './Error';
 import { useFirebase } from './firebase'
 
 function handleSubmit(firebase, vote) {
@@ -22,13 +23,17 @@ const Submit = () => {
   console.log(data)
 
   return (
-    <div>
-      <p>{vote && vote.state}</p>
-      <p>{vote && vote.candidate}</p>
-      <p>{vote && vote.party}</p>
-      <button onClick={() => handleSubmit(firebase, vote)}><Link to='/results'>SUBMIT</Link></button>
-      <button><Link to='/candidate'>RESET</Link></button>
-    </div>
+    <>
+      {!vote && !vote.state ? <Error /> :
+        <div>
+          <p>{vote && vote.state}</p>
+          <p>{vote && vote.candidate}</p>
+          <p>{vote && vote.party}</p>
+          <button onClick={() => handleSubmit(firebase, vote)}><Link to='/results'>SUBMIT</Link></button>
+          <button><Link to='/candidate'>RESET</Link></button>
+        </div>
+      }
+    </>
   )
 }
 
