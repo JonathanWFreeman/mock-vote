@@ -24,7 +24,7 @@ const Submit = () => {
 
   return (
     <>
-      {!vote && !vote.state ? <Error /> :
+      {!vote.state ? <Error /> :
         <div>
           <p>{vote && vote.state}</p>
           <p>{vote && vote.candidate}</p>
