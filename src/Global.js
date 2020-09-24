@@ -8,74 +8,70 @@ export const DemocratBlue = '#00aef3';
 export const BattlegroundPurple = '#9100ff';
 
 const GlobalStyle = createGlobalStyle`
-  * {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
-  }
 
-  html {
-    box-sizing: border-box;
-    ${'' /* font-size: 16px; */}
-    font-size: calc(10px + 1.5vmin);
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
-  }
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
 
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
+html {
+  box-sizing: border-box;
+  ${'' /* font-size: 16px; */}
+  font-size: calc(10px + 1.5vmin);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
 
-  body{
-    background-color: ${BackgroundColor};
-    color: #FFF;
-    ${Above.small`
-      font-size: 1.5rem;
-    `}
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
-  p {
-    line-height: 2rem;
-    font-size: 1rem;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  h2 {
-    margin: 0 0 20px;
-    font-size: 2rem;
-  }
-
-  h3 {
-    ${'' /* margin: 20px 0; */}
-    ${'' /* font-size: min(max(1rem, 5vw), 1.5rem); */}
+body{
+  background-color: ${BackgroundColor};
+  color: #FFF;
+  ${Above.small`
     font-size: 1.5rem;
-  }
+  `}
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  h4 {
-    ${'' /* margin: 20px 0; */}
-    ${'' /* font-size: min(max(1rem, 5vw), 1.5rem); */}
-    font-size: 1.2rem;
-  }
+p {
+  line-height: 2rem;
+  font-size: 1rem;
+}
 
-  img {
-    width: 100%;
-  }
+h1 {
+  font-size: 2.5rem;
+}
 
-  a {
-    text-decoration: none;
-    color: #FFF;
-  }
+h2 {
+  margin: 0 0 20px;
+  font-size: 2rem;
+}
+
+h3 {
+  ${'' /* margin: 20px 0; */}
+  ${'' /* font-size: min(max(1rem, 5vw), 1.5rem); */}
+  font-size: 1.5rem;
+}
+
+h4 {
+  ${'' /* margin: 20px 0; */}
+  ${'' /* font-size: min(max(1rem, 5vw), 1.5rem); */}
+  font-size: 1.2rem;
+}
+
+img {
+  width: 100%;
+}
 `;
 
 export default GlobalStyle;
