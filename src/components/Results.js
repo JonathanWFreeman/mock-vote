@@ -94,7 +94,7 @@ const Results = () => {
     <>
       {db.electoralCollege &&
         <>
-          <h2>Results</h2>
+          <h2>US Results</h2>
           <CandidateResults>
             <div>
               <h2>Popular</h2>
@@ -121,6 +121,7 @@ const Results = () => {
             </StateResults>
           : null}
           <MapSection>
+            <h2>State Results</h2>
             <h3>Select a state for more information</h3>
             <USAMap title='US Voting Map' customize={statesCustomConfig(db)} onClick={(event) => mapHandler(event, setState)} width={width} height={width / 2.5}/>
           </MapSection>
