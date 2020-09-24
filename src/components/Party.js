@@ -12,7 +12,7 @@ const Party = (props) => {
       <FlexContainer>
           <Link to='/submit'><ImageElement img={'democrat-logo.png'} alt={'Democrat Logo'} title={'Democrat'} type={'party'} choice={'democrat'}/></Link>
           <Link to='/submit'><ImageElement img={'republican-logo.png'} alt={'Republican Logo'} title={'Republican'} type={'party'} choice={'republican'}/></Link>
-          <Link to='/submit'><ImageElement img={'republican-logo.png'} alt={'Independent Logo'} title={'Independent'} type={'party'} choice={'independent'}/></Link>
+          <Link to='/submit'><ImageElement img={'other-logo.png'} alt={'Independent Logo'} title={'Other'} type={'party'} choice={'other'}/></Link>
       </FlexContainer>
     </>
   )
