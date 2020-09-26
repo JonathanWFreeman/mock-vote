@@ -1,16 +1,16 @@
 import React from 'react'
 import {Firebase, FirebaseContext} from '../firebase'
-import {DataProvider} from './DataContext'
+import {RouteProvider} from './RouteContext'
 import {VoteProvider} from './VoteContext'
 
 export const Context = ({children}) => {
   return (
     <FirebaseContext.Provider value={new Firebase()}>
-      <DataProvider>
+      <RouteProvider>
         <VoteProvider>
           {children}
         </VoteProvider>
-      </DataProvider>
+      </RouteProvider>
     </FirebaseContext.Provider>
   )
 }

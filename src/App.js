@@ -1,7 +1,6 @@
 import React from 'react';
 import GlobalStyle from './Global';
 import styled from 'styled-components';
-import {Route, BrowserRouter as Router} from 'react-router-dom';
 
 import {addVote} from './helpers';
 import {Header} from './components/elements'
@@ -54,9 +53,7 @@ const App = () => {
       <Wrapper>
         <Header />
         <Content>
-          <Router>
-            <Route exact path='/' component={Routes} />
-          </Router>
+          <Routes />
         </Content>
       </Wrapper>
       <GlobalStyle />

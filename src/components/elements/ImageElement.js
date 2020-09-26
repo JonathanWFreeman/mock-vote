@@ -2,12 +2,13 @@ import React, {useContext} from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
 
-import {VoteContext} from '../context'
+import {VoteContext, RouteContext} from '../context'
 
 const ImageContainer = styled.div`
   ${'' /* width: 50%; */}
   h3 {
     margin-bottom: 25px;
+    color: #FFF;
   }
 `;
 
@@ -25,18 +26,20 @@ const Image = styled.img`
 `;
 
 const ImageElement = props => {
-  const {img, alt, title, color, type, choice} = props;
+  const {img, alt, title, color, type, choice, link} = props;
   
   const [vote, setVote] = useContext(VoteContext);
+  const [route, setRoute] = useContext(RouteContext);
 
-  const onClickHandler = (event, type, choice) => {
+  const onClickHandler = (event, type, choice, link) => {
     // event.preventDefault();
     setVote(prevVote => ({...prevVote, [type]: choice}))
+    setRoute(link);
   }
   
   return (
     <div>
-       <ImageContainer onClick={(event) => onClickHandler(event, type, choice)}>
+       <ImageContainer onClick={(event) => onClickHandler(event, type, choice, link)}>
           <h3>{title}</h3>
           <Image src={require(`../../images/${img}`)} alt={alt} color={color} />
         </ImageContainer> 
