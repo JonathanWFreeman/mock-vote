@@ -31,7 +31,7 @@ const Submit = () => {
           <p>{vote && vote.party}</p>
           <p>{vote && vote.email}</p>
           <button onClick={() => handleSubmit(setRoute, 'results')}>SUBMIT</button>
-          <button onClick={() => handleSubmit(setRoute, 'candidates')}>RESET</button>
+          <button onClick={() => handleSubmit(setRoute, 'candidate')}>RESET</button>
         </div>
       }
     </>
