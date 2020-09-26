@@ -1,6 +1,7 @@
-import app from 'firebase/app';
-import firebase from 'firebase';
-import 'firebase/database';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+// import firebase from 'firebase';
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,26 +16,21 @@ class Firebase {
   constructor() {
     firebase.initializeApp(config);
     this.db = firebase.firestore();
+    // this.auth = firebase.auth();
   }
 
   parties = () => this.db.collection('parties');
   candidates = () => this.db.collection('candidates');
   states = () => this.db.collection('states');
   total = () => this.db.collection('total');
-  electoralCollege = () => this.db.collection('electoralCollege')
+  electoralCollege = () => this.db.collection('electoralCollege');
+  users = () => this.db.collection('users');
 
   increment = () => firebase.firestore.FieldValue.increment(1);
   decrement = () => firebase.firestore.FieldValue.decrement(-1);
+
+  auth = () => firebase.auth();
+  login = async (authProvider) => await this.auth.signInWithPopup(authProvider);
 }
-
-// class Firebase {
-//   constructor() {
-//     app.initializeApp(config);
-//     // this.db = app.database();
-//     this.db = app.firestore();
-//   }
-
-//   votes = () => this.db.ref('votes');
-// }
 
 export default Firebase;
