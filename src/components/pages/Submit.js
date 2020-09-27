@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
-import {VoteContext, RouteContext} from './context'
-import Error from './Error';
+import {VoteContext, RouteContext} from '../context'
+import {Error} from '../pages';
 
 function handleSubmit(setRoute, route) {
   setRoute(route)

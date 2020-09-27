@@ -1,11 +1,11 @@
 import React, {useState, useContext, useEffect, useRef} from 'react';
-import { useFirebase } from './firebase'
+import { useFirebase } from '../firebase'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
-import {returnElectoralVotes, mapHandler, statesCustomConfig, getFirebaseData, setFirebaseData} from '../helpers';
-import {useWindowDimensions, Below} from './utilities'
-import {StateData} from './elements'
-import {VoteContext, DataContext} from './context'
+import {returnElectoralVotes, mapHandler, statesCustomConfig, getFirebaseData, setFirebaseData} from '../../helpers';
+import {useWindowDimensions, Below} from '../utilities'
+import {StateData} from '../elements'
+import {VoteContext} from '../context'
 // import PropTypes from 'prop-types'
 
 const ResultDiv = styled.div`
@@ -64,7 +64,6 @@ const BreakdownResults = styled.section`
 
 
 
-const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));
 const Results = () => {
   // const [db, setDb] = useContext(DataContext);
   const [state, setState] = useState('');
@@ -78,18 +77,17 @@ const Results = () => {
   
   const [vote] = useContext(VoteContext);
 
-
   useEffect(() => {
     async function doStuff(){
-      // await wait(500);
+      console.log(firebase);
+      console.log(vote);
       await setFirebaseData(firebase, vote);
       await getFirebaseData(firebase, type, setDb);
     }
     doStuff();
   }, [firebase, type, vote])
   const ec = returnElectoralVotes(db);
-  // console.log(db)
-  // console.log(ec)
+
   return (
     <>
       {db.electoralCollege &&

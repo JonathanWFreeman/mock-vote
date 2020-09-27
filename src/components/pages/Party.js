@@ -1,8 +1,6 @@
 import React from 'react'
-
-import { FlexContainer } from './utilities/';
-import { ImageElement } from './elements';
-// import PropTypes from 'prop-types'
+import { FlexContainer } from '../utilities/';
+import { ImageElement } from '../elements';
 
 const Party = () => {
   return (
@@ -16,10 +14,6 @@ const Party = () => {
     </>
   )
 }
-
-// Party.propTypes = {
-
-// }
 
 export default Party
 

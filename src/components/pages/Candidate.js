@@ -1,10 +1,7 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
-
-import {ImageElement} from './elements';
-import {FlexContainer} from './utilities';
-import {DemocratBlue, RepublicanRed} from '../Global';
-import {RouteContext} from './context'
+import {ImageElement} from '../elements';
+import {FlexContainer} from '../utilities';
+import {DemocratBlue, RepublicanRed} from '../../Global';
 
 const Candidate = () => {  
   return (
@@ -17,10 +14,6 @@ const Candidate = () => {
     </>
   )
 }
-
-// Candidate.propTypes = {
-
-// }
 
 export default Candidate
 

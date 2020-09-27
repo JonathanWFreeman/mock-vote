@@ -1,12 +1,8 @@
 import React from 'react';
 import GlobalStyle from './Global';
 import styled from 'styled-components';
-
-import {addVote} from './helpers';
 import {Header} from './components/elements'
 import Routes from './components/Routes';
-import Results from './components/Results'
-import {Context} from './components/context'
 
 const Content = styled.section`
 	display: flex;

@@ -1,15 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react'
-
-import Candidate from './Candidate'
-import Party from './Party'
-import Submit from './Submit'
+import firebase from 'firebase'
+import {Candidate, Party, Submit, Error, Results, Login} from './pages'
 import {VoteContext, RouteContext} from './context'
 import {setLocation} from './utilities'
-import Error from './Error';
-import Results from './Results';
-import Login from './Login'
-import firebase from 'firebase'
 import { useFirebase } from './firebase';
+const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));
 
 function checkUserExists(firestore, setUserExists, userEmail) {
   return new Promise((resolve, reject) => {
@@ -18,10 +13,11 @@ function checkUserExists(firestore, setUserExists, userEmail) {
       ref.forEach(doc => {
           console.log(doc.id, " => ", doc.data());
           setUserExists(true);
+          resolve(true);
         });
-        resolve();
+        resolve(false);
     }).catch(err => {
-      console.error("Error writing document: ", err);
+      console.error(err);
       reject();
     });
   })
@@ -40,12 +36,11 @@ const Routes = () => {
   const [userExists, setUserExists] = useState(false);
   const [route, setRoute] = useContext(RouteContext)
 
-  const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));
-  async function authHandler(authData) {
+  function authHandler(authData) {
     // Check if email is in db, if not set email (during submit phase)
     // set local storage
-    const getUserId = await authData.user.uid;
-    const getUserEmail = await authData.user.email;
+    const getUserId = authData.user.uid;
+    const getUserEmail = authData.user.email;
     // If no email, continue, if email stop
     console.log(authData);
     // console.log(getUser);
@@ -54,28 +49,26 @@ const Routes = () => {
   
   async function authenticate(provider) {
     
-    const checkUser = await checkUserExists(firestore, setUserExists, 'knokoutz@gmail.com');
+    const isUser = await checkUserExists(firestore, setUserExists, 'knokaoutz@gmail.com');
     // await wait(1000)
-    console.log(checkUser);
-    if(!checkUser){
-      console.log(checkUser);
+    if(isUser){
+      setRoute('candidate')
+    }else{
       providerLogin(provider, firestore, authHandler)
     }
     // Handle route change if logged in etc
-    // authHandler();
   }
-  // SET USER INTO VOTE CONTEXT - CAUSE OF BREAKING
+  // SET USER INTO VOTE CONTEXT - CAUSE OF BREAKING DURING SUBMISSION
   
   useEffect(() => {
     async function doStuff(){
-    await setLocation(setVote, setErr, setCountry);
-    await checkUserExists(firestore, setUserExists, 'knokoutz@gmail.com'); 
-    if(userExists){
-      // history.push('/candidate');
-      setRoute('candidate')
+      await setLocation(setVote, setErr, setCountry);
+      // const isUser = await checkUserExists(firestore, setUserExists, 'knokoutz@gmail.com'); 
+      // if(isUser){
+      //   setRoute('candidate')
+      // }
     }
-  }
-  doStuff();
+    doStuff();
   }, [firestore, setRoute, setVote, userExists]);
 
 
