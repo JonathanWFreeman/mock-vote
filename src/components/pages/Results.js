@@ -81,8 +81,10 @@ const Results = () => {
     async function doStuff(){
       console.log(firebase);
       console.log(vote);
-      await setFirebaseData(firebase, vote);
-      await getFirebaseData(firebase, type, setDb);
+      if(vote){
+        await setFirebaseData(firebase, vote).catch(err => console.log(err));
+      }
+      await getFirebaseData(firebase, type, setDb).catch(err => console.log(err));
     }
     doStuff();
   }, [firebase, type, vote])
