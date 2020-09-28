@@ -1,6 +1,7 @@
 # Folders / Files #
 ###################
 .git/
+build
 
 # Logs
 logs
