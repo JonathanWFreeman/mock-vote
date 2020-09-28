@@ -146,7 +146,7 @@ export function checkUserExists(firestore, uid) {
         console.log('in doc');
       });
       console.log(ref.empty);
-      ref.empty ? reject('User does not exist') : resolve(true);
+      ref.empty ? reject(false) : resolve(true);
       // User not returned
       // console.log(ref);
     }).catch(err => {
