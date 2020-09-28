@@ -15,26 +15,30 @@ const Wrapper = styled.section`
   background: #000;
 `;
 
-const Error = ({country}) => {
-    console.log(country);
+const ErrorBlock = styled.div`
+  margin: 2%;
+  h3{
+    margin: 2% 0;
+  }
+`;
+
+const Error = ({error}) => {
   return (
     <Wrapper>
-      {country === null &&
       <>
-        <h2>Whoops!</h2>
         <h2>There has been an error.</h2>
-        <h2>Please turn off adblock and refresh.</h2>
+        <h2>Please refresh and try again.</h2>
+        <ErrorBlock>
+          <h3>Error:</h3>
+          <h4>{error}</h4>
+        </ErrorBlock>
       </>
-      }
-      {country !== null && country !== 'US' &&
-        <h2>Sorry, US residents only</h2>
-      }
     </Wrapper>
   )
 }
 
 Error.propTypes = {
-  region: PropTypes.string.isRequired,
+  error: PropTypes.any,
 }
 
 export default Error
