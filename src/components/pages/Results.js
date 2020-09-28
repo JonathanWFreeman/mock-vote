@@ -83,6 +83,7 @@ const Results = () => {
       console.log(vote);
       if(vote){
         await setFirebaseData(firebase, vote).catch(err => console.log(err));
+        localStorage.setItem('uid', vote.uid);
       }
       await getFirebaseData(firebase, type, setDb).catch(err => console.log(err));
     }

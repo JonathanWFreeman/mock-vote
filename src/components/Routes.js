@@ -56,7 +56,6 @@ const Routes = () => {
                 email: getUserEmail,
                 name: getUserName,
               }));       
-              localStorage.setItem('uid', getUserId);
               setRoute('candidate')
             }
           }
