@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import styled, {keyframes} from 'styled-components';
 import {BackgroundColor} from '../../Global'
 
-// const rotate = keyframes`
-//    from {
-//     background-position: 0% 50%;
-//   }
-//   to {
-//     background-position: 100% 50%;
-//   }
-// `;
+const rotate = keyframes`
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -21,7 +18,10 @@ const ButtonWrapper = styled.div`
   margin: 8% 2%;
   transition: 0.5s;
   cursor: pointer;
-  ${'' /* animation: ${rotate} 2s linear infinite; */}
+  :hover {
+    background-size: 400% 400%;
+    animation: ${rotate} 2s linear;
+  }
 `;
 
 const ButtonContainer = styled.button`
