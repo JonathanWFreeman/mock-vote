@@ -1,11 +1,18 @@
 import React, {useContext} from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
-
+import {Above, Below} from '../utilities'
 import {VoteContext, RouteContext} from '../context'
 
 const ImageContainer = styled.div`
   ${'' /* width: 50%; */}
+  flex: 1;
+  ${Below.small`
+    flex: none;
+  `}
+  ${Above.large`
+    flex: none;
+  `}
   h3 {
     margin-bottom: 25px;
     color: #FFF;
@@ -14,9 +21,12 @@ const ImageContainer = styled.div`
 
 const Image = styled.img`
   transition: .2s;
-  filter: grayscale(.4);
   border-radius: 10px;
   width: 70%;
+`;
+
+const ImageClick = styled(Image)`
+  filter: grayscale(.4);
   cursor: pointer;
   :hover {
     transform: scale(1.02,1.02);
@@ -25,29 +35,34 @@ const Image = styled.img`
   }
 `;
 
-const ImageElement = props => {
+export const ImageSubmit = props => {
   const {img, alt, title, color, type, choice, link} = props;
   
   const [vote, setVote] = useContext(VoteContext);
   const [route, setRoute] = useContext(RouteContext);
 
   const onClickHandler = (event, type, choice, link) => {
-    // event.preventDefault();
     setVote(prevVote => ({...prevVote, [type]: choice}))
     setRoute(link);
   }
   
   return (
-    <div>
-       <ImageContainer onClick={(event) => onClickHandler(event, type, choice, link)}>
-          <h3>{title}</h3>
-          <Image src={require(`../../images/${img}`)} alt={alt} color={color} />
-        </ImageContainer> 
-    </div>
+    <ImageContainer onClick={(event) => onClickHandler(event, type, choice, link)}>
+      <h3>{title}</h3>
+      <ImageClick src={require(`../../images/${img}`)} alt={alt} color={color} />
+    </ImageContainer> 
   )
 }
 
-ImageElement.propTypes = {
+export const ImageElement = props => {
+  const {img, alt, color} = props;
+
+  return (
+    <Image src={require(`../../images/${img}`)} alt={alt} color={color} />
+  )
+}
+
+ImageSubmit.propTypes = {
   img: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
@@ -56,4 +71,7 @@ ImageElement.propTypes = {
   choice: PropTypes.string.isRequired,
 }
 
-export default ImageElement
+ImageElement.propTypes = {
+  img: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+}
