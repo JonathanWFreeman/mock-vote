@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import firebase from 'firebase'
 import {Candidate, Party, Submit, Error, Results, Login} from './pages'
 import {VoteContext, RouteContext} from './context'
-import {setLocation, fetchLocation} from './utilities'
+import {setLocation, fetchLocation, Loader} from './utilities'
 import { useFirebase } from './firebase'
 import {checkUserExists, handleError} from '../helpers'
 
@@ -16,7 +16,9 @@ const Routes = () => {
   const [route, setRoute] = useContext(RouteContext)
   
   async function authenticate(provider) {
+    setLoading(true);
     await providerLogin(provider);
+    setLoading(false);
   }
   
   async function providerLogin(provider) {
@@ -40,7 +42,7 @@ const Routes = () => {
           setUserExists(true)
           await wait(3000)
           setRoute('results')
-          // localStorage.setItem('uid', getUserId);
+          localStorage.setItem('uid', getUserId);
           setUserExists(false)
         }else{
           const userLocation = await fetchLocation().catch((err) => handleError(err, setError, setRoute));
@@ -60,7 +62,6 @@ const Routes = () => {
             }
           }
         }
-        // set local storage email or uid idk
         resolve();
       }else{
         reject();
@@ -97,7 +98,7 @@ const Routes = () => {
       {route === 'submit' && <Submit />}
       {route === 'results' && <Results />}
       {route === 'error' && <Error error={error} />}
-      {/* {route === 'loading' && <Loading />} */}
+      {loading && <Loader />}
     </>
   )
 }
