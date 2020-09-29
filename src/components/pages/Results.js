@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect, useRef} from 'react';
 import { useFirebase } from '../firebase'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
-import {returnElectoralVotes, mapHandler, statesCustomConfig, getFirebaseData, setFirebaseData} from '../../helpers';
+import {returnElectoralVotes, mapHandler, returnMapColors, getFirebaseData, setFirebaseData} from '../../helpers';
 import {useWindowDimensions, Below} from '../utilities'
 import {StateData} from '../elements'
 import {VoteContext} from '../context'
@@ -31,17 +31,6 @@ const MapSection = styled.section`
   }
 `;
 
-const StateResults = styled.section`
-  position: fixed;
-  top: 0;
-  background: #000;
-  width: 100%;
-  padding: 1% 2%;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #FFF;
-`;
-
 const CandidateResults = styled.section`
   display: flex;
   justify-content: space-evenly;
@@ -62,34 +51,31 @@ const BreakdownResults = styled.section`
   }
 `;
 
-
-
 const Results = () => {
-  // const [db, setDb] = useContext(DataContext);
+  const firebase = useFirebase();
+  const [db, setDb] = useState({});
   const [state, setState] = useState('');
-  const [mapColor, setMapColor] = useState({});
+  const [vote] = useContext(VoteContext);
+  const {current:type} = useRef(['parties', 'candidates', 'states', 'total', 'electoralCollege'])
   const { width } = useWindowDimensions();
   // write async function wait for data - loader
   
-  const [db, setDb] = useState({});
-  const firebase = useFirebase();
-  const {current:type} = useRef(['parties', 'candidates', 'states', 'total', 'electoralCollege'])
-  
-  const [vote] = useContext(VoteContext);
-
   useEffect(() => {
     async function doStuff(){
       console.log(firebase);
       console.log(vote);
       if(vote){
         await setFirebaseData(firebase, vote).catch(err => console.log(err));
-        localStorage.setItem('uid', vote.uid);
+        // localStorage.setItem('uid', vote.uid);
       }
       await getFirebaseData(firebase, type, setDb).catch(err => console.log(err));
     }
     doStuff();
   }, [firebase, type, vote])
-  const ec = returnElectoralVotes(db);
+
+  const electoral = returnElectoralVotes(db);
+  const mapColor = returnMapColors(db);
+  console.log(mapColor);
 
   return (
     <>
@@ -109,22 +95,20 @@ const Results = () => {
             <div>
             <h2>Electoral</h2>
               <ResultDiv>
-                <h3>Biden: {ec.biden}</h3>
+                <h3>Biden: {electoral.biden}</h3>
               </ResultDiv>
               <ResultDiv>
-                <h3>Trump: {ec.trump}</h3>
+                <h3>Trump: {electoral.trump}</h3>
               </ResultDiv>
             </div>
           </CandidateResults>
           {state && state !== 'DC' ? 
-            <StateResults>
-              <StateData clickedState={state} setState={setState} db={db} /> 
-            </StateResults>
+            <StateData clickedState={state} setState={setState} db={db} mapColor={mapColor} /> 
           : null}
           <MapSection>
             <h2>State Results</h2>
             <h3>Select a state for more information</h3>
-            <USAMap title='US Voting Map' customize={statesCustomConfig(db)} onClick={(event) => mapHandler(event, setState)} width={width} height={width / 2.5}/>
+            <USAMap title='US Voting Map' customize={mapColor} onClick={(event) => mapHandler(event, setState)} width={width} height={width / 2.5}/>
           </MapSection>
           <h2>Results Breakdown</h2>
           <BreakdownResults>
