@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import { Above } from './components/utilities';
 
 export const SiteWidth = '80vw';
-export const BackgroundColor = '#333333';
+export const BackgroundColor = '#282c34';
 export const RepublicanRed = '#e81b23';
 export const DemocratBlue = '#00aef3';
 export const BattlegroundPurple = '#9100ff';
@@ -33,7 +33,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body{
-    background-color: ${BackgroundColor};
+    background-image: url(${require('./images/flag.jpg')});
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: #FFF;
     ${Above.small`
       font-size: 1.5rem;
