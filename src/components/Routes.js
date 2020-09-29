@@ -13,7 +13,7 @@ const Routes = () => {
   const [userExists, setUserExists] = useState(false);
   const [loading, setLoading] = useState(false);
   const [vote, setVote] = useContext(VoteContext);
-  const [route, setRoute] = useContext(RouteContext)
+  const [route, setRoute] = useContext(RouteContext);
   
   async function authenticate(provider) {
     setLoading(true);
@@ -79,8 +79,9 @@ const Routes = () => {
         setRoute('results')
       }
     }
+    // firestore.analytics();
     doStuff();
-  }, [setRoute]);
+  }, [firestore, setRoute]);
 
   if(userExists) {
     return (
