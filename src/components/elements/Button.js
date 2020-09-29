@@ -18,7 +18,7 @@ const ButtonWrapper = styled.div`
   background: linear-gradient(90deg, rgba(0,174,243,1) 0%, rgba(0,174,243,1) 20%, rgba(145,0,255,1) 50%, rgba(232,27,35,1) 80%, rgba(232,27,35,1) 100%);
   padding: 4px;
   border-radius: 10px;
-  margin: 2%;
+  margin: 8% 2%;
   transition: 0.5s;
   cursor: pointer;
   ${'' /* animation: ${rotate} 2s linear infinite; */}
