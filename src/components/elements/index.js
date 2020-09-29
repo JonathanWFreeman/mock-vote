@@ -1,5 +1,7 @@
 import Header from './Header';
-import ImageElement from './ImageElement';
 import StateData from './StateData';
+import Button from './Button';
 
-export {Header, ImageElement, StateData};
+export * from './ImageElement';
+
+export {Header, StateData, Button};
