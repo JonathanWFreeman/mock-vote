@@ -5,16 +5,16 @@ import {Above, Below} from '../utilities'
 import {VoteContext, RouteContext} from '../context'
 
 const ImageContainer = styled.div`
-  ${'' /* width: 50%; */}
   flex: 1;
   ${Below.small`
+    width: 100%;
     flex: none;
   `}
   ${Above.large`
     flex: none;
   `}
   h3 {
-    margin-bottom: 25px;
+    margin: 25px;
     color: #FFF;
   }
 `;
