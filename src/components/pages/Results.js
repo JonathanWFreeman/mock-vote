@@ -3,10 +3,9 @@ import { useFirebase } from '../firebase'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
 import {returnElectoralVotes, mapHandler, returnMapColors, getFirebaseData, setFirebaseData} from '../../helpers';
-import {useWindowDimensions, Below} from '../utilities'
+import {useWindowDimensions, Below, Loader} from '../utilities'
 import {StateData} from '../elements'
 import {VoteContext} from '../context'
-// import PropTypes from 'prop-types'
 
 const ResultDiv = styled.div`
   display: flex;
@@ -55,20 +54,19 @@ const Results = () => {
   const firebase = useFirebase();
   const [db, setDb] = useState({});
   const [state, setState] = useState('');
+  const [loading, setLoading] = useState(true);
   const [vote] = useContext(VoteContext);
   const {current:type} = useRef(['parties', 'candidates', 'states', 'total', 'electoralCollege'])
   const { width } = useWindowDimensions();
-  // write async function wait for data - loader
   
   useEffect(() => {
     async function doStuff(){
-      console.log(firebase);
-      console.log(vote);
       if(vote){
         await setFirebaseData(firebase, vote).catch(err => console.log(err));
-        // localStorage.setItem('uid', vote.uid);
+        localStorage.setItem('uid', vote.uid);
       }
       await getFirebaseData(firebase, type, setDb).catch(err => console.log(err));
+      setLoading(false);
     }
     doStuff();
   }, [firebase, type, vote])
@@ -144,12 +142,9 @@ const Results = () => {
           </BreakdownResults>
         </>
       }
+      {loading && <Loader />}
     </>
   )
 }
-
-// Results.propTypes = {
-
-// }
 
 export default Results
