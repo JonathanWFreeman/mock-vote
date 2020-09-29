@@ -13,7 +13,7 @@ export function isMobile() {
 const size = {
   small: 600,
   medium: 960,
-  large: 1140,
+  large: 1350,
 };
 
 export const Above = Object.keys(size).reduce((acc, label) => {
