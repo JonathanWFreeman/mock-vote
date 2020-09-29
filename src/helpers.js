@@ -1,4 +1,3 @@
-import {electoralCollege} from './testDb';
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from './Global';
 
 export async function setFirebaseData(firebase, {party, candidate, state, uid, email, name}) {
@@ -72,7 +71,8 @@ export function returnElectoralVotes(db) {
   let bidenVotes = 0;
   let trumpVotes = 0;
 
-  if(db.states){  
+  if(db.states && db.electoralCollege){  
+    
     for(const [state, value] of Object.entries(db.states)) {
       
       //get state total votes
@@ -80,26 +80,27 @@ export function returnElectoralVotes(db) {
       const trump = value.trump ? value.trump.total : 0;
 
       //add EC votes
-      if(biden > trump) bidenVotes += electoralCollege[state];
-      if(trump > biden) trumpVotes += electoralCollege[state];
+      if(biden > trump) bidenVotes += db.electoralCollege.states[state];
+      if(trump > biden) trumpVotes += db.electoralCollege.states[state];
     }
 
     //set votes to db
     return {biden: bidenVotes, trump: trumpVotes};
   }
 }
+
 export const mapHandler = (event, setState) => {
   const state = event.target.dataset.name;
   setState(state);
 };
 
-const returnMapColor = (biden, trump) => {
+const getMapColor = (biden, trump) => {
   if(biden > trump) return DemocratBlue;
   if(trump > biden) return RepublicanRed;
   return BattlegroundPurple;
 }
 
-export const statesCustomConfig = (db) => {
+export function returnMapColors(db) {
   let map = {
     // NJ: {
     //   fill: "navy",
@@ -111,17 +112,19 @@ export const statesCustomConfig = (db) => {
   };
 
   // loop through states
-  for(const [state, value] of Object.entries(db.states)) {
+  if(db.states) {
+    for(const [state, value] of Object.entries(db.states)) {
 
-    const biden = value.biden ? value.biden.total : 0;
-    const trump = value.trump ? value.trump.total : 0;
+      const biden = value.biden ? value.biden.total : 0;
+      const trump = value.trump ? value.trump.total : 0;
+      
+      map[state] = {
+        fill: getMapColor(biden, trump),
+      };
+    }
     
-    map[state] = {
-      fill: returnMapColor(biden, trump),
-    };
+    return map;
   }
-  
-  return map;
 };
 
 export function isEmpty(obj) {
@@ -154,4 +157,8 @@ export function checkUserExists(firestore, uid) {
     });
     
   })
+}
+
+export function returnFullName(name) {
+  return name === 'biden' ? 'Joe Biden' : 'Donald Trump';
 }
