@@ -1,5 +1,5 @@
 import React from 'react';
-import GlobalStyle from './Global';
+import GlobalStyle, {BackgroundColor} from './Global';
 import styled from 'styled-components';
 import {Header} from './components/elements'
 import Routes from './components/Routes';
@@ -16,34 +16,12 @@ const Content = styled.section`
 
 const Wrapper = styled.section`
   text-align: center;
-  background-color: #282c34;
-  color: white;
+  background-color: ${BackgroundColor}f0;
+  color: #FFF;
   min-height: 100vh;
-  ${'' /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */}
-  /* font-size: calc(10px + 2vmin); */
 `;
 
-// TODO: Put DB in state
-// TODO: Add submission / reset
-// TODO: Add routing
-// TODO: Add vote to state
-// TODO: Maybe add confirmation?
-
 const App = () => {
-  // addVote({state: 'TX', candidate: 'trump', party: 'republican'});
-  // addVote({party: 'republican', candidate: 'trump', state: 'TX'});
-  // addVote({party: 'republican', candidate: 'biden', state: 'OK'});
-  // addVote({party: 'democrat', candidate: 'biden', state: 'OK'});
-  // addVote({party: 'republican', candidate: 'trump', state: 'OK'});
-  // addVote({party: 'democrat', candidate: 'trump', state: 'FL'});
-  // addVote({party: 'democrat', candidate: 'trump', state: 'FL'});
-  // addVote({party: 'democrat', candidate: 'biden', state: 'OK'});
-  // addVote({party: 'democrat', candidate: 'biden', state: 'CA'});
-  
-  
   return (
     <>
       <Wrapper>
