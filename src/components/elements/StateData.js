@@ -2,6 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types'
 
+const StateResults = styled.section`
+  position: fixed;
+  top: 0;
+  background: ${({mapColor}) => mapColor};
+  width: 100%;
+  padding: 1% 2%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #FFF;
+`;
+
 const State = styled.p`
   display: flex;
   justify-content: center;
@@ -37,7 +48,7 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
-const StateData = ({clickedState, setState, db}) => {
+const StateData = ({clickedState, setState, db, mapColor}) => {
   const results = [db.states[clickedState]];
   console.log(db)
   const returnResults = [];
@@ -71,7 +82,7 @@ const StateData = ({clickedState, setState, db}) => {
   }
  
   return(
-    <>
+    <StateResults mapColor={mapColor[clickedState].fill}>
       <CloseButton onClick={() => setState(null)}>X</CloseButton>
       <StateContainer>
         <State>{clickedState}</State>
@@ -79,7 +90,7 @@ const StateData = ({clickedState, setState, db}) => {
       <Results>
         {returnResults}
       </Results>
-    </>
+    </StateResults>
   );
 }
 
