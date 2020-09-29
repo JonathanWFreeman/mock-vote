@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types'
+import {BattlegroundPurple} from '../../Global'
 
 const StateResults = styled.section`
   position: fixed;
@@ -80,9 +81,9 @@ const StateData = ({clickedState, setState, db, mapColor}) => {
       }
     };
   }
- 
+  
   return(
-    <StateResults mapColor={mapColor[clickedState].fill}>
+    <StateResults mapColor={mapColor[clickedState] ? mapColor[clickedState].fill : BattlegroundPurple}>
       <CloseButton onClick={() => setState(null)}>X</CloseButton>
       <StateContainer>
         <State>{clickedState}</State>
