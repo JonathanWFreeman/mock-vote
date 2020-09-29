@@ -11,6 +11,7 @@ const Container = styled.section`
   flex-wrap: wrap;
   justify-content: space-evenly;
   width: 100%;
+  text-transform: capitalize;
 `;
 
 const FlexContainer = ({children}) => {
