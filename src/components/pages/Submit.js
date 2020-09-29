@@ -4,7 +4,7 @@ import {VoteContext, RouteContext} from '../context'
 import {Button} from '../elements'
 import {returnFullName} from '../../helpers'
 import {ImageElement} from '../elements';
-import {FlexContainer} from '../utilities';
+import {FlexContainer, Below} from '../utilities';
 import {DemocratBlue, RepublicanRed} from '../../Global';
 
 function handleSubmit(setRoute, route) {
@@ -28,7 +28,14 @@ function returnImage(ref){
   }
 }
 
-const ResultContainer = styled.section`
+const ResultWrapper = styled.section`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+const ResultContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,9 +43,9 @@ const ResultContainer = styled.section`
   margin-top: 50px;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.section`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   margin-top: 50px;
   flex-wrap: wrap;
   width: 100%
@@ -62,20 +69,22 @@ const Submit = () => {
     <>
       <h2>Confirm Choices</h2>
       <FlexContainer>
-        <ResultContainer>
-          <h3>Candidate:</h3>
-          <h3>{candidate}</h3>
-          <ImageContainer>
-            <ImageElement img={returnImage(vote.candidate)} alt={candidate}></ImageElement>
-          </ImageContainer>
-        </ResultContainer>
-        <ResultContainer>
-          <h3>Party:</h3>
-          <h3>{vote.party}</h3>
-          <ImageContainer>
-            <ImageElement img={returnImage(vote.party)} alt={vote.party}></ImageElement>
-          </ImageContainer>
-        </ResultContainer>
+        <ResultWrapper>
+          <ResultContainer>
+            <h3>Candidate:</h3>
+            <h3>{candidate}</h3>
+            <ImageContainer>
+              <ImageElement img={returnImage(vote.candidate)} alt={candidate}></ImageElement>
+            </ImageContainer>
+          </ResultContainer>
+          <ResultContainer>
+            <h3>Party:</h3>
+            <h3>{vote.party}</h3>
+            <ImageContainer>
+              <ImageElement img={returnImage(vote.party)} alt={vote.party}></ImageElement>
+            </ImageContainer>
+          </ResultContainer>
+        </ResultWrapper>
         <ButtonContainer>
           <Button onClick={() => handleSubmit(setRoute, 'results')}>VOTE</Button>
           <Button onClick={() => handleSubmit(setRoute, 'candidate')}>RESET</Button>
