@@ -1,26 +1,86 @@
 import React, {useContext} from 'react'
+import styled from 'styled-components'
 import {VoteContext, RouteContext} from '../context'
-import {Error} from '../pages';
+import {Button} from '../elements'
+import {returnFullName} from '../../helpers'
+import {ImageElement} from '../elements';
+import {FlexContainer} from '../utilities';
+import {DemocratBlue, RepublicanRed} from '../../Global';
 
 function handleSubmit(setRoute, route) {
   setRoute(route)
 }
 
+function returnImage(ref){
+  switch(ref){
+    case 'biden':
+      return 'joe-biden.jpg';
+    case 'trump':
+      return 'donald-trump.jpg';
+    case 'democrat':
+      return 'democrat-logo.png';
+    case 'republican':
+      return 'republican-logo.png';
+    case 'other':
+      return 'other-logo.png';
+    default:
+      break;
+  }
+}
+
+const ResultContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  margin-top: 50px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 50px;
+  flex-wrap: wrap;
+  width: 100%
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 50px;
+`;
+
 const Submit = () => {
   const [vote] = useContext(VoteContext);
   const [route, setRoute] = useContext(RouteContext);
+
+  const candidate = returnFullName(vote.candidate);
   
   return (
     <>
-      {!vote.state ? <Error /> :
-        <div>
-          <p>{vote && vote.candidate}</p>
-          <p>{vote && vote.party}</p>
-          <p>{vote && vote.email}</p>
-          <button onClick={() => handleSubmit(setRoute, 'results')}>SUBMIT</button>
-          <button onClick={() => handleSubmit(setRoute, 'candidate')}>RESET</button>
-        </div>
-      }
+      <h2>Confirm Choices</h2>
+      <FlexContainer>
+        <ResultContainer>
+          <h3>Candidate:</h3>
+          <h3>{candidate}</h3>
+          <ImageContainer>
+            <ImageElement img={returnImage(vote.candidate)} alt={candidate}></ImageElement>
+          </ImageContainer>
+        </ResultContainer>
+        <ResultContainer>
+          <h3>Party:</h3>
+          <h3>{vote.party}</h3>
+          <ImageContainer>
+            <ImageElement img={returnImage(vote.party)} alt={vote.party}></ImageElement>
+          </ImageContainer>
+        </ResultContainer>
+        <ButtonContainer>
+          <Button onClick={() => handleSubmit(setRoute, 'results')}>VOTE</Button>
+          <Button onClick={() => handleSubmit(setRoute, 'candidate')}>RESET</Button>
+        </ButtonContainer>
+      </FlexContainer>
     </>
   )
 }
