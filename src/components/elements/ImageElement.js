@@ -28,10 +28,12 @@ const Image = styled.img`
 const ImageClick = styled(Image)`
   filter: grayscale(.4);
   cursor: pointer;
+  ${({color}) => `border: 4px solid transparent`};
   :hover {
     transform: scale(1.02,1.02);
     filter: grayscale(0);
     box-shadow: 0 0 150px ${({color}) => color}80;
+    ${({color}) => `border: 4px solid ${color}`};
   }
 `;
 
