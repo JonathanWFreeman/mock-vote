@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types'
 import {BattlegroundPurple} from '../../Global'
+import SvgElement from './SvgElement'
+import {Below} from '../utilities'
+import {stateSvgs} from '../../stateSvgs'
 
 const StateResults = styled.section`
   position: fixed;
@@ -9,26 +12,27 @@ const StateResults = styled.section`
   background: ${({mapColor}) => mapColor};
   width: 100%;
   padding: 1% 2%;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #FFF;
-`;
-
-const State = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 3px solid #FFF;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px; 
+  border-bottom: 2px solid #FFF;
 `;
 
 const StateContainer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  align-content: flex-start;
   align-items: center;
-  width: 10vw;
+  justify-content: flex-start;
+  ${Below.small`
+    display: none;
+  `}
+`;
+
+const SvgContainer = styled.div`
+  display: flex;
+  height: 100%;
 `;
 
 const Results = styled.div`
@@ -36,7 +40,7 @@ const Results = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  max-width: 75vw;
+  ${'' /* max-width: 75vw; */}
   div:first-child {
     margin: 0 4%;
   }
@@ -44,14 +48,43 @@ const Results = styled.div`
 
 const CloseButton = styled.div`
   position: absolute;
+  display: inline-block;
   right: 15px;
   top: 5px;
   cursor: pointer;
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  z-index: 100;
+
+  :before,
+  :after {
+    transform: rotate(-45deg);
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -5px;
+    margin-left: -25px;
+    display: block;
+    height: 10px;
+    width: 50px;
+    background-color: #fff;
+    transition: all 0.2s ease-out;
+  }
+
+  :after {
+    transform: rotate(45deg);
+  }
+
+  :hover:before,
+  :hover:after {
+    transform: rotate(0deg);
+  }
 `;
 
 const StateData = ({clickedState, setState, db, mapColor}) => {
   const results = [db.states[clickedState]];
-  console.log(db)
   const returnResults = [];
   let voteTotals = [];
   let resultsIndex = 0;
@@ -63,11 +96,10 @@ const StateData = ({clickedState, setState, db, mapColor}) => {
     returnResults.push(<p key={resultsIndex}>No votes yet.</p>)
   } else {
     for(const [candidate, value] of Object.entries(results[0])) {
-      for(const [party, votes] of Object.entries(value)) {
-        if(party !== 'total'){
-          voteTotals.push(<p key={votesIndex}>{party}: {votes}</p>);
-          votesIndex++;
-        }
+      const sortedValue = Object.entries(value).sort();
+      for(const [party, votes] of sortedValue) {
+        voteTotals.push(<p key={votesIndex}>{party}: {votes}</p>);
+        votesIndex++;
       }
       if(candidate !== 'total') {
         returnResults.push(
@@ -84,9 +116,13 @@ const StateData = ({clickedState, setState, db, mapColor}) => {
   
   return(
     <StateResults mapColor={mapColor[clickedState] ? mapColor[clickedState].fill : BattlegroundPurple}>
-      <CloseButton onClick={() => setState(null)}>X</CloseButton>
+      <h2>{stateSvgs[clickedState].name}</h2>
+      <CloseButton onClick={() => setState(null)}></CloseButton>
       <StateContainer>
-        <State>{clickedState}</State>
+        <SvgContainer>
+          <SvgElement state={clickedState}/>
+        </SvgContainer>
+
       </StateContainer>
       <Results>
         {returnResults}
