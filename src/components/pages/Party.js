@@ -5,7 +5,7 @@ import { ImageSubmit } from '../elements';
 const Party = () => {
   return (
     <>
-      <h2>Choose your party!</h2>
+      <h2>Choose your party affiliation!</h2>
       <FlexContainer>
           <ImageSubmit img={'democrat-logo.png'} alt={'Democrat Logo'} title={'Democrat'} type={'party'} choice={'democrat'} link={'submit'} />
           <ImageSubmit img={'republican-logo.png'} alt={'Republican Logo'} title={'Republican'} type={'party'} choice={'republican'} link={'submit'} />
