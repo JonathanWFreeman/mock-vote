@@ -3,14 +3,103 @@ import { useFirebase } from '../firebase'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
 import {returnElectoralVotes, mapHandler, returnMapColors, getFirebaseData, setFirebaseData} from '../../helpers';
-import {useWindowDimensions, Below, Loader} from '../utilities'
-import {StateData} from '../elements'
+import {useWindowDimensions, Below, Above, Loader} from '../utilities'
+import {StateData, ImageElement} from '../elements'
 import {VoteContext} from '../context'
+import {DemocratBlue, RepublicanRed} from '../../Global';
 
-const ResultDiv = styled.div`
+function returnImage(ref){
+  switch(ref){
+    case 'biden':
+      return 'joe-biden.jpg';
+    case 'trump':
+      return 'donald-trump.jpg';
+    case 'democrat':
+      return 'democrat-logo.png';
+    case 'republican':
+      return 'republican-logo.png';
+    case 'other':
+      return 'other-logo.png';
+    default:
+      break;
+  }
+}
+
+function returnCandidateResults(db, candidate, color) {
+  const element = [];
+  Object.entries(db.candidates).forEach(([doc, collection], index) => {
+    let el = [];
+    let sortedCollection = Object.entries(collection).sort();
+    if(doc === candidate){
+      sortedCollection.forEach(([key, value], index) => {
+        el.push(<h4 key={index}>{key}: {value}</h4>)
+      })
+      element.push (
+        <CandidateBreakdown key={index} color={color}>
+          <h3>Votes by Party:</h3>
+          {el}
+        </CandidateBreakdown>
+      )
+    }
+  })
+  return element;
+}
+
+function returnPartyResults(db) {
+  const element = [];
+  Object.entries(db.parties).forEach(([doc, collection], index) => {
+    let el = [];
+    let sortedCollection = Object.entries(collection).sort();
+    sortedCollection.forEach(([key, value], index) => {
+      el.push(
+        <div key={index}>
+          <h3>{key}</h3>
+          <ImageElement img={returnImage(key)} alt={`${key}-logo`} />
+          <h4>Votes: {value}</h4>
+        </div>
+        )
+    })
+    element.push(
+        <PartyContainer key={index}>
+          {el}
+        </PartyContainer>
+      )
+  })
+  return element;
+}
+
+const CandidateBreakdown = styled.div`
+  margin-top: 4%;
+  border-top: 2px solid ${({color}) => color};
+  h3{
+    margin: 4% 0;
+  }
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 50px;
+  flex-direction: column;
+  padding: 2% 0;
+  ${({color, positionLarge}) => `border-${positionLarge}: 2px solid ${color}`};
+  ${Below.medium`
+    ${({color, positionSmall}) => `border-${positionSmall}: 2px solid ${color}`};
+  `}
+`;
+
+const PartyContainer = styled.section`
+  flex: 1;
+  max-width: 33%;
+`;
+
+const ResultSection = styled.section`
   display: flex;
   align-items: baseline;
   justify-content: space-evenly;
+  margin: 2% 0;
 `;
 
 const MapSection = styled.section`
@@ -34,6 +123,8 @@ const CandidateResults = styled.section`
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+  flex-wrap: wrap;
+  text-transform: capitalize;
 `;
 
 const BreakdownResults = styled.section`
@@ -79,25 +170,22 @@ const Results = () => {
       {db.electoralCollege &&
         <>
           <h2>US Results</h2>
+          <h2>Total Votes: {db.total.total.total}</h2>
           <CandidateResults>
-            <div>
-              <h2>Popular</h2>
-              <ResultDiv>
-                <h3>Biden: {db.candidates.biden ? db.candidates.biden.total : '0'}</h3>
-              </ResultDiv>
-              <ResultDiv>
-                <h3>Trump: {db.candidates.trump ? db.candidates.trump.total : '0'}</h3>
-              </ResultDiv>
-            </div>
-            <div>
-            <h2>Electoral</h2>
-              <ResultDiv>
-                <h3>Biden: {electoral.biden}</h3>
-              </ResultDiv>
-              <ResultDiv>
-                <h3>Trump: {electoral.trump}</h3>
-              </ResultDiv>
-            </div>
+            <ImageContainer color={DemocratBlue} positionLarge={'right'} positionSmall={'bottom'}>
+              <h2>Joe Biden</h2>
+              <ImageElement img={'joe-biden.jpg'} alt={'Joe Biden'}></ImageElement>
+              <h3>Popular: {db.candidates.biden ? db.candidates.biden.total : '0'}</h3>
+              <h3>Electoral: {electoral.biden}</h3>
+              {returnCandidateResults(db, 'biden', DemocratBlue)}
+            </ImageContainer>
+            <ImageContainer color={RepublicanRed} positionLarge={'left'} positionSmall={'top'}>
+              <h2>Donald Trump</h2>
+              <ImageElement img={'donald-trump.jpg'} alt={'Donald Trump'}></ImageElement>
+              <h3>Popular: {db.candidates.trump ? db.candidates.trump.total : '0'}</h3>
+              <h3>Electoral: {electoral.trump}</h3>
+              {returnCandidateResults(db, 'trump', RepublicanRed)}
+            </ImageContainer>
           </CandidateResults>
           {state && state !== 'DC' ? 
             <StateData clickedState={state} setState={setState} db={db} mapColor={mapColor} /> 
@@ -107,39 +195,12 @@ const Results = () => {
             <h3>Select a state for more information</h3>
             <USAMap title='US Voting Map' customize={mapColor} onClick={(event) => mapHandler(event, setState)} width={width} height={width / 2.5}/>
           </MapSection>
-          <h2>Results Breakdown</h2>
+          <h2>Party Results</h2>
+          <h3>Total Votes By Party</h3>
           <BreakdownResults>
-            <h2>Parties</h2>
-            <ResultDiv>
-              {Object.entries(db.parties).map(([doc, collection], index) => {
-                let el = [];
-                let sortedCollection = Object.entries(collection).sort();
-                sortedCollection.forEach(([key, value], index) => {
-                  el.push(<h3 key={index}>{key}: {value}</h3>)
-                })
-                return (
-                    <div key={index}>
-                      {el}
-                    </div>
-                  )
-              })}
-            </ResultDiv>
-            <h2>Candidates</h2>
-            <ResultDiv>
-              {Object.entries(db.candidates).map(([doc, collection], index) => {
-                let el = [];
-                let sortedCollection = Object.entries(collection).sort();
-                sortedCollection.forEach(([key, value], index) => {
-                  el.push(<h4 key={index}>{key}: {value}</h4>)
-                })
-                return (
-                    <div key={index}>
-                      <h2>{doc}:</h2>
-                      <div>{el}</div>
-                    </div>
-                  )
-              })}
-            </ResultDiv>
+            <ResultSection>
+              {returnPartyResults(db)}
+            </ResultSection>
           </BreakdownResults>
         </>
       }
