@@ -13,6 +13,12 @@ const StateResults = styled.section`
   width: 100%;
   padding: 1% 2%;
   border-bottom: 2px solid #FFF;
+  h2 {
+    margin: 0;
+  }
+  h3 {
+    margin: 0 0 20px;
+  }
 `;
 
 const StateContainer = styled.div`
@@ -121,6 +127,7 @@ const StateData = ({clickedState, setState, db, mapColor}) => {
   return(
     <StateResults mapColor={mapColor[clickedState] ? mapColor[clickedState].fill : BattlegroundPurple}>
       <h2>{stateSvgs[clickedState].name}</h2>
+      {db.states[clickedState] && <h3>Total Votes: {db.states[clickedState].total}</h3>}
       <CloseButton onClick={() => setState(null)}></CloseButton>
       <StateContainer>
         <SvgContainer>
