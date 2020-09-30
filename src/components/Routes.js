@@ -74,7 +74,6 @@ const Routes = () => {
         setRoute('results')
       }
     }
-    firestore.analytics()
     doStuff();
   }, [firestore, setRoute]);
 

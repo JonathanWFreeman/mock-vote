@@ -18,7 +18,6 @@ class Firebase {
   constructor() {
     firebase.initializeApp(config);
     this.db = firebase.firestore();
-    // this.auth = firebase.auth();
   }
 
   parties = () => this.db.collection('parties');
@@ -33,8 +32,6 @@ class Firebase {
 
   auth = () => firebase.auth();
   login = async (authProvider) => await this.auth.signInWithPopup(authProvider);
-
-  analytics = () => firebase.analytics();
 }
 
 export default Firebase;
