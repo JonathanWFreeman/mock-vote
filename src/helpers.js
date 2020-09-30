@@ -61,9 +61,8 @@ export function returnElectoralVotes(db) {
   let trumpVotes = 0;
 
   if(db.states && db.electoralCollege){  
-    
     for(const [state, value] of Object.entries(db.states)) {
-      
+ 
       //get state total votes
       const biden = value.biden ? value.biden.total : 0;
       const trump = value.trump ? value.trump.total : 0;

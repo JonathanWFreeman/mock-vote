@@ -25,7 +25,6 @@ class Firebase {
   candidates = () => this.db.collection('candidates');
   states = () => this.db.collection('states');
   total = () => this.db.collection('total');
-  electoralCollege = () => this.db.collection('electoralCollege');
   users = () => this.db.collection('users');
 
   increment = () => firebase.firestore.FieldValue.increment(1);
