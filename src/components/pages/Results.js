@@ -109,35 +109,37 @@ const Results = () => {
           </MapSection>
           <h2>Results Breakdown</h2>
           <BreakdownResults>
+            <h2>Parties</h2>
             <ResultDiv>
-                {Object.entries(db.parties).map(([doc, collection], index) => {
-                  let el = [];
-                  let sortedCollection = Object.entries(collection).sort();
-                  sortedCollection.forEach(([key, value], index) => {
-                    el.push(<h3 key={index}>{key}: {value}</h3>)
-                  })
-                  return (
-                      <div key={index}>
-                        {el}
-                      </div>
-                    )
-                })}
-              </ResultDiv>
-              <ResultDiv>
-                {Object.entries(db.candidates).map(([doc, collection], index) => {
-                  let el = [];
-                  let sortedCollection = Object.entries(collection).sort();
-                  sortedCollection.forEach(([key, value], index) => {
-                    el.push(<p key={index}>{key}: {value}</p>)
-                  })
-                  return (
-                      <div key={index}>
-                        <h2>{doc}:</h2>
-                        <div>{el}</div>
-                      </div>
-                    )
-                })}
-              </ResultDiv>
+              {Object.entries(db.parties).map(([doc, collection], index) => {
+                let el = [];
+                let sortedCollection = Object.entries(collection).sort();
+                sortedCollection.forEach(([key, value], index) => {
+                  el.push(<h3 key={index}>{key}: {value}</h3>)
+                })
+                return (
+                    <div key={index}>
+                      {el}
+                    </div>
+                  )
+              })}
+            </ResultDiv>
+            <h2>Candidates</h2>
+            <ResultDiv>
+              {Object.entries(db.candidates).map(([doc, collection], index) => {
+                let el = [];
+                let sortedCollection = Object.entries(collection).sort();
+                sortedCollection.forEach(([key, value], index) => {
+                  el.push(<h4 key={index}>{key}: {value}</h4>)
+                })
+                return (
+                    <div key={index}>
+                      <h2>{doc}:</h2>
+                      <div>{el}</div>
+                    </div>
+                  )
+              })}
+            </ResultDiv>
           </BreakdownResults>
         </>
       }
