@@ -83,10 +83,10 @@ const Results = () => {
             <div>
               <h2>Popular</h2>
               <ResultDiv>
-                <h3>Biden: {db.candidates.biden.total}</h3>
+                <h3>Biden: {db.candidates.biden ? db.candidates.biden.total : '0'}</h3>
               </ResultDiv>
               <ResultDiv>
-                <h3>Trump: {db.candidates.trump.total}</h3>
+                <h3>Trump: {db.candidates.trump ? db.candidates.trump.total : '0'}</h3>
               </ResultDiv>
             </div>
             <div>
