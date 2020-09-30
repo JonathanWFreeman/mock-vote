@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
 
-import { Below } from './Breakpoints';
-
 const Container = styled.section`
   ${'' /* ${Below.small`
     display: block;

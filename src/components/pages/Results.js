@@ -73,7 +73,6 @@ const Results = () => {
 
   const electoral = returnElectoralVotes(db);
   const mapColor = returnMapColors(db);
-  console.log(mapColor);
 
   return (
     <>

@@ -41,13 +41,13 @@ export const ImageSubmit = props => {
   const [vote, setVote] = useContext(VoteContext);
   const [route, setRoute] = useContext(RouteContext);
 
-  const onClickHandler = (event, type, choice, link) => {
+  const onClickHandler = (type, choice, link) => {
     setVote(prevVote => ({...prevVote, [type]: choice}))
     setRoute(link);
   }
   
   return (
-    <ImageContainer onClick={(event) => onClickHandler(event, type, choice, link)}>
+    <ImageContainer onClick={() => onClickHandler(type, choice, link)}>
       <h3>{title}</h3>
       <ImageClick src={require(`../../images/${img}`)} alt={alt} color={color} />
     </ImageContainer> 

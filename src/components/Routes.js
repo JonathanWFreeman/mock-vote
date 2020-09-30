@@ -29,15 +29,11 @@ const Routes = () => {
   function authHandler(authData) {
     return new Promise(async (resolve, reject) => {
       if(authData){
-        console.log(authData);
         const getUserId = authData.user.uid;
         const getUserEmail = authData.user.email;
-        const getUserName = authData.user.displayName;
-        // get name
-        // set UID also not just to doc
                 
         const isUser = await checkUserExists(firestore, getUserId).catch((err) => console.log(err));
-        console.log(isUser);
+
         if(isUser === true){
           setUserExists(true)
           await wait(3000)
@@ -56,7 +52,6 @@ const Routes = () => {
                 state: userLocation.region_code,
                 uid: getUserId,
                 email: getUserEmail,
-                name: getUserName,
               }));       
               setRoute('candidate')
             }
@@ -79,7 +74,7 @@ const Routes = () => {
         setRoute('results')
       }
     }
-    // firestore.analytics();
+    firestore.analytics()
     doStuff();
   }, [firestore, setRoute]);
 

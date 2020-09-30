@@ -1,11 +1,8 @@
 import React from 'react'
 import styled, {keyframes} from 'styled-components'
-import {BackgroundColor} from '../../Global'
 
 const Wrapper = styled.aside`
   position: absolute;
-  ${'' /* left: 50%; */}
-  ${'' /* background: ${BackgroundColor}; */}
   background: #282c3490;
   left: 0;
   top: 0;

@@ -4,8 +4,7 @@ import {VoteContext, RouteContext} from '../context'
 import {Button} from '../elements'
 import {returnFullName} from '../../helpers'
 import {ImageElement} from '../elements';
-import {FlexContainer, Below} from '../utilities';
-import {DemocratBlue, RepublicanRed} from '../../Global';
+import {FlexContainer} from '../utilities';
 
 function handleSubmit(setRoute, route) {
   setRoute(route)

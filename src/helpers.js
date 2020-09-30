@@ -1,6 +1,6 @@
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from './Global';
 
-export async function setFirebaseData(firebase, {party, candidate, state, uid, email, name}) {
+export async function setFirebaseData(firebase, {party, candidate, state, uid, email}) {
   const parties = firebase.parties().doc(party);
   const candidates = firebase.candidates().doc(candidate);
   const states = firebase.states().doc(state);
@@ -8,11 +8,6 @@ export async function setFirebaseData(firebase, {party, candidate, state, uid, e
   const user = firebase.users().doc(uid);
   const batch = firebase.db.batch();
 
-  // const fb = firebase.db.collection('test').doc('test');
-  // fb.update({test2: firebase.increment()})
-  // console.log(fb);
-  console.log(email);  
-  
   // party
   batch.set(parties, {[party]: firebase.increment()}, {merge:true})
   
@@ -33,16 +28,11 @@ export async function setFirebaseData(firebase, {party, candidate, state, uid, e
   
   // total
   batch.set(total, {total: firebase.increment()}, {merge:true})
-  // batch.set(ec, electoralCollege)
 
   // user
   batch.set(user, {
     email,
     uid,
-    name,
-    state,
-    candidate,
-    party,
   })
 
   // batch
@@ -60,7 +50,6 @@ export async function getFirebaseData(firebase, type, setDb) {
     const getData = await firebase[ref]().get();
     for(let doc of getData.docs){
       arr[doc.id] = doc.data()
-      console.log(arr);
     }
     setDb(prev => ({...prev, [ref]: arr}));
     arr = {}
@@ -101,15 +90,7 @@ const getMapColor = (biden, trump) => {
 }
 
 export function returnMapColors(db) {
-  let map = {
-    // NJ: {
-    //   fill: "navy",
-    //   clickHandler: (event) => console.log('Custom handler for NJ', event.target.dataset)
-    // },
-    // NY: {
-    //   fill: "#CC0000"
-    // }
-  };
+  let map = {};
 
   // loop through states
   if(db.states) {
@@ -122,7 +103,6 @@ export function returnMapColors(db) {
         fill: getMapColor(biden, trump),
       };
     }
-    
     return map;
   }
 };
@@ -144,14 +124,7 @@ export function checkUserExists(firestore, uid) {
   return new Promise((resolve, reject) => {
     firestore.users().where('uid', '==', uid).get()
     .then(function(ref) {
-      ref.forEach(doc => {
-        console.log(doc.id, " => ", doc.data());
-        console.log('in doc');
-      });
-      console.log(ref.empty);
-      ref.empty ? reject(false) : resolve(true);
-      // User not returned
-      // console.log(ref);
+      ref.empty ? reject('User has not voted') : resolve(true);
     }).catch(err => {
       console.log(err);
     });
