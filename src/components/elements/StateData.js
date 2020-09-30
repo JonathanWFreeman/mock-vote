@@ -40,8 +40,7 @@ const Results = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  ${'' /* max-width: 75vw; */}
-  div:first-child {
+  >div {
     margin: 0 4%;
   }
 `;
@@ -71,6 +70,11 @@ const CloseButton = styled.div`
     width: 50px;
     background-color: #fff;
     transition: all 0.2s ease-out;
+    ${Below.small`
+      height: 5px;
+      width: 25px;
+      margin-left: 0;
+    `}
   }
 
   :after {
