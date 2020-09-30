@@ -31,6 +31,7 @@ const Error = ({error}) => {
         <ErrorBlock>
           <h3>Error:</h3>
           <h4>{error}</h4>
+          <h4>{error.includes('fetch') && `Make sure adblock is turned off.`}</h4>
         </ErrorBlock>
       </>
     </Wrapper>
