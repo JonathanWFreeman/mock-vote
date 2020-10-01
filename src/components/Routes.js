@@ -26,7 +26,7 @@ const Routes = () => {
   
   async function providerLogin(provider) {
     const authProvider = await new firebase.auth[`${provider}AuthProvider`]();
-    await firestore.auth().signInWithPopup(authProvider).then(authHandler).catch(err => handleError(err.message, setError, setRoute));
+    await firestore.auth().signInWithRedirect(authProvider).then(authHandler).catch(err => handleError(err.message, setError, setRoute));
   }
   
   function authHandler(authData) {
@@ -41,7 +41,7 @@ const Routes = () => {
           setUserExists(true)
           await wait(3000)
           setRoute('results')
-          // localStorage.setItem('uid', getUserId);
+          localStorage.setItem('uid', getUserId);
           setUserExists(false)
         }else{
           const userLocation = await fetchLocation().catch((err) => handleError(err, setError, setRoute));
