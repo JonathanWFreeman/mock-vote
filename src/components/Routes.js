@@ -67,9 +67,9 @@ const Routes = () => {
     })
   }
   
+  ReactGA.pageview(route);
   useEffect(() => {
     async function doStuff(){
-      ReactGA.pageview(route);
       const isUser = localStorage.getItem('uid');
       if(isUser){
         setUserExists(true)
@@ -79,7 +79,7 @@ const Routes = () => {
       }
     }
     doStuff();
-  }, [firestore, route, setRoute]);
+  }, [setRoute]);
 
   if(userExists) {
     return (
