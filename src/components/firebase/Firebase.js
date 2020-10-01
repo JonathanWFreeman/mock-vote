@@ -1,7 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-// import firebase from 'firebase';
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -31,7 +30,7 @@ class Firebase {
   decrement = () => firebase.firestore.FieldValue.decrement(-1);
 
   auth = () => firebase.auth();
-  login = async (authProvider) => await this.auth.signInWithPopup(authProvider);
+  login = async (authProvider) => await this.auth.signInWithRedirect(authProvider);
 }
 
 export default Firebase;
