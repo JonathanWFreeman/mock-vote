@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import GlobalStyle, {BackgroundColor} from './Global';
 import styled from 'styled-components';
 import {Header} from './components/elements'
 import Routes from './components/Routes';
-
 
 const Content = styled.section`
 	display: flex;
@@ -21,7 +20,7 @@ const Wrapper = styled.section`
   color: #FFF;
   min-height: 100vh;
 `;
-// Try just adding in tracking code to html
+
 const App = () => {
   return (
     <>
