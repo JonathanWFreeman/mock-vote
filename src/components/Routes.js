@@ -41,7 +41,7 @@ const Routes = () => {
           setUserExists(true)
           await wait(3000)
           setRoute('results')
-          localStorage.setItem('uid', getUserId);
+          // localStorage.setItem('uid', getUserId);
           setUserExists(false)
         }else{
           const userLocation = await fetchLocation().catch((err) => handleError(err, setError, setRoute));
