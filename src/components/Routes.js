@@ -26,15 +26,19 @@ const Routes = () => {
   
   async function providerLogin(provider) {
     const authProvider = await new firebase.auth[`${provider}AuthProvider`]();
-    await firestore.auth().signInWithRedirect(authProvider).then(authHandler).catch(err => handleError(err.message, setError, setRoute));
+    await firestore.auth().signInWithRedirect(authProvider).catch(err => handleError(err.message, setError, setRoute));
+    await firestore.auth().getRedirectResult().then(res => console.log(res)).catch(err => handleError(err.message, setError, setRoute));
+    // firestore.auth().getRedirectResult().then(res => console.log(res));
   }
   
-  function authHandler(authData) {
-    return new Promise(async (resolve, reject) => {
-      if(authData){
+  
+  
+  ReactGA.pageview(route);
+  useEffect(() => {
+    async function authHandler(authData) {
+      if(authData.user !== null){
         const getUserId = authData.user.uid;
-        const getUserEmail = authData.user.email;
-                
+        const getUserEmail = authData.user.email;          
         const isUser = await checkUserExists(firestore, getUserId).catch((err) => console.log(err));
 
         if(isUser === true){
@@ -60,16 +64,14 @@ const Routes = () => {
             }
           }
         }
-        resolve();
-      }else{
-        reject();
       }
-    })
-  }
-  
-  ReactGA.pageview(route);
-  useEffect(() => {
+    }
     async function doStuff(){
+      setLoading(true);
+      await firestore.auth().getRedirectResult().then(authHandler).catch((err) => handleError(err, setError, setRoute));
+      // firestore.auth().onAuthStateChanged(res => console.log(res));
+      // firebase.auth().signOut();
+      // firestore.auth().onAuthStateChanged(authHandler);
       const isUser = localStorage.getItem('uid');
       if(isUser){
         setUserExists(true)
@@ -77,9 +79,10 @@ const Routes = () => {
         setUserExists(false)
         setRoute('results')
       }
+      setLoading(false);
     }
     doStuff();
-  }, [setRoute]);
+  }, [firestore, setRoute, setVote]);
 
   if(userExists) {
     return (
