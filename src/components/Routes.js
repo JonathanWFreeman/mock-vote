@@ -73,7 +73,7 @@ const Routes = () => {
       const isUser = localStorage.getItem('uid');
       if(isUser){
         setUserExists(true)
-        await wait(3000)
+        await wait(2000)
         setUserExists(false)
         setRoute('results')
       }
