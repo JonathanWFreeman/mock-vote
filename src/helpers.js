@@ -134,3 +134,5 @@ export function checkUserExists(firestore, uid) {
 export function returnFullName(name) {
   return name === 'biden' ? 'Joe Biden' : 'Donald Trump';
 }
+
+export const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));

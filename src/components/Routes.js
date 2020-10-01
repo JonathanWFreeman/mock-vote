@@ -1,12 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react'
+import ReactGA from 'react-ga';
 import firebase from 'firebase'
 import {Candidate, Party, Submit, Error, Results, Login} from './pages'
 import {VoteContext, RouteContext} from './context'
-import {setLocation, fetchLocation, Loader} from './utilities'
+import {fetchLocation, Loader} from './utilities'
 import { useFirebase } from './firebase'
-import {checkUserExists, handleError} from '../helpers'
+import {checkUserExists, handleError, wait} from '../helpers'
 
-const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));
+
+ReactGA.initialize('UA-28313388-5');
+
 const Routes = () => {
   const firestore = useFirebase();
   const [error, setError] =  useState(false);
@@ -66,6 +69,7 @@ const Routes = () => {
   
   useEffect(() => {
     async function doStuff(){
+      ReactGA.pageview(route);
       const isUser = localStorage.getItem('uid');
       if(isUser){
         setUserExists(true)
@@ -75,7 +79,7 @@ const Routes = () => {
       }
     }
     doStuff();
-  }, [firestore, setRoute]);
+  }, [firestore, route, setRoute]);
 
   if(userExists) {
     return (
