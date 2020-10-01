@@ -3,7 +3,7 @@ import { useFirebase } from '../firebase'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
 import {returnElectoralVotes, mapHandler, returnMapColors, getFirebaseData, setFirebaseData} from '../../helpers';
-import {useWindowDimensions, Below, Above, Loader} from '../utilities'
+import {useWindowDimensions, Below, Loader} from '../utilities'
 import {StateData, ImageElement} from '../elements'
 import {VoteContext} from '../context'
 import {DemocratBlue, RepublicanRed} from '../../Global';
@@ -55,7 +55,7 @@ function returnPartyResults(db) {
         <div key={index}>
           <h3>{key}</h3>
           <ImageElement img={returnImage(key)} alt={`${key}-logo`} />
-          <h4>Votes: {value}</h4>
+          <h3>Votes: {value}</h3>
         </div>
         )
     })
@@ -93,14 +93,13 @@ const ImageContainer = styled.div`
 const PartyContainer = styled.section`
   flex: 1;
   max-width: 33%;
+  ${Below.small`
+    max-width: 100%;
+    margin: 10% 0;
+  `}
 `;
 
-const ResultSection = styled.section`
-  display: flex;
-  align-items: baseline;
-  justify-content: space-evenly;
-  margin: 2% 0;
-`;
+
 
 const MapSection = styled.section`
   padding: 5% 0;
@@ -130,18 +129,16 @@ const CandidateResults = styled.section`
   text-transform: capitalize;
 `;
 
-const BreakdownResults = styled.section`
+const PartyResults = styled.section`
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-  flex-direction: column;
   text-transform: capitalize;
-  div {
-    margin: 1% 0;
-    ${Below.small`
-      display: block;
-    `}
-  }
+  margin: 2% 0;
+  ${Below.small`
+    display: block;
+    flex-direction: column;
+  `}
 `;
 
 const Results = () => {
@@ -200,11 +197,9 @@ const Results = () => {
           </MapSection>
           <h2>Party Results</h2>
           <h3>Total Votes By Party</h3>
-          <BreakdownResults>
-            <ResultSection>
-              {returnPartyResults(db)}
-            </ResultSection>
-          </BreakdownResults>
+          <PartyResults>
+            {returnPartyResults(db)}
+          </PartyResults>
         </>
       }
       {loading && <Loader />}
