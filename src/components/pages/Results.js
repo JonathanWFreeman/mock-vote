@@ -103,7 +103,10 @@ const ResultSection = styled.section`
 `;
 
 const MapSection = styled.section`
+  padding: 5% 0;
   margin: 5% 0;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
   path {
     pointer-events: all;
   }
