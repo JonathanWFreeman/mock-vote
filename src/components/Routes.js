@@ -1,100 +1,22 @@
 import React, {useContext, useEffect, useState} from 'react'
 import ReactGA from 'react-ga';
-import firebase from 'firebase'
 import {Candidate, Party, Submit, Error, Results, Login} from './pages'
-import {VoteContext, RouteContext} from './context'
-import {fetchLocation, Loader} from './utilities'
-import { useFirebase } from './firebase'
-import {checkUserExists, handleError, wait} from '../helpers'
-
+import {RouteContext} from './context'
+import {Loader} from './utilities'
 
 ReactGA.initialize('UA-28313388-5');
 
 const Routes = () => {
-  const firestore = useFirebase();
   const [error, setError] =  useState(false);
-  const [userExists, setUserExists] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [vote, setVote] = useContext(VoteContext);
-  const [route, setRoute] = useContext(RouteContext);
-  
-  async function authenticate(provider) {
-    setLoading(true);
-    await providerLogin(provider);
-    setLoading(false);
-  }
-  
-  async function providerLogin(provider) {
-    const authProvider = await new firebase.auth[`${provider}AuthProvider`]();
-    await firestore.auth().signInWithRedirect(authProvider).catch(err => handleError(err.message, setError, setRoute));
-    await firestore.auth().getRedirectResult().then(res => console.log(res)).catch(err => handleError(err.message, setError, setRoute));
-    // firestore.auth().getRedirectResult().then(res => console.log(res));
-  }
-  
-  
+  const [route, setRoute] = useContext(RouteContext); 
+  window.scrollTo(0, 0);
   
   ReactGA.pageview(route);
-  useEffect(() => {
-    async function authHandler(authData) {
-      if(authData.user !== null){
-        const getUserId = authData.user.uid;
-        const getUserEmail = authData.user.email;          
-        const isUser = await checkUserExists(firestore, getUserId).catch((err) => console.log(err));
-
-        if(isUser === true){
-          setUserExists(true)
-          await wait(3000)
-          setRoute('results')
-          localStorage.setItem('uid', getUserId);
-          setUserExists(false)
-        }else{
-          const userLocation = await fetchLocation().catch((err) => handleError(err, setError, setRoute));
-  
-          if(userLocation){
-            if(userLocation.country_code !== 'US'){
-              setError('US residents only')
-              setRoute('error')
-            }else{
-              setVote(prevVote => ({...prevVote,
-                state: userLocation.region_code,
-                uid: getUserId,
-                email: getUserEmail,
-              }));       
-              setRoute('candidate')
-            }
-          }
-        }
-      }
-    }
-    async function doStuff(){
-      setLoading(true);
-      await firestore.auth().getRedirectResult().then(authHandler).catch((err) => handleError(err, setError, setRoute));
-      // firestore.auth().onAuthStateChanged(res => console.log(res));
-      // firebase.auth().signOut();
-      // firestore.auth().onAuthStateChanged(authHandler);
-      const isUser = localStorage.getItem('uid');
-      if(isUser){
-        setUserExists(true)
-        await wait(2000)
-        setUserExists(false)
-        setRoute('results')
-      }
-      setLoading(false);
-    }
-    doStuff();
-  }, [firestore, setRoute, setVote]);
-
-  if(userExists) {
-    return (
-      <>
-        <h2>Looks like you've already voted</h2>
-        <h2>You'll be redirected to the results shortly</h2>
-      </>
-    )
-  }
+   
   return (
     <> 
-      {route === 'login' && <Login authenticate={authenticate} />}
+      {route === 'login' && <Login setError={setError} setLoading={setLoading} />}
       {route === 'candidate' && <Candidate />}
       {route === 'party' && <Party />}
       {route === 'submit' && <Submit />}
