@@ -20,7 +20,7 @@ const Routes = () => {
       {route === 'candidate' && <Candidate />}
       {route === 'party' && <Party />}
       {route === 'submit' && <Submit />}
-      {route === 'results' && <Results />}
+      {route === 'results' && <Results setError={setError} setLoading={setLoading} />}
       {route === 'error' && <Error error={error} />}
       {loading && <Loader />}
     </>
