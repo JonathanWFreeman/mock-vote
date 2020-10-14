@@ -1,11 +1,12 @@
 import React, {useState, useContext, useEffect, useRef} from 'react';
+import PropTypes from 'prop-types'
 import { useFirebase } from '../firebase'
 import styled from 'styled-components';
 import USAMap from 'react-usa-map';
-import {returnElectoralVotes, mapHandler, returnMapColors, getFirebaseData, setFirebaseData} from '../../helpers';
-import {useWindowDimensions, Below, Loader} from '../utilities'
+import {returnElectoralVotes, mapHandler, returnMapColors, getFirebaseData, setFirebaseData, handleError} from '../../helpers';
+import {useWindowDimensions, Below} from '../utilities'
 import {StateData, ImageElement} from '../elements'
-import {VoteContext} from '../context'
+import {VoteContext, RouteContext} from '../context'
 import {DemocratBlue, RepublicanRed} from '../../Global';
 
 function returnImage(ref){
@@ -141,26 +142,27 @@ const PartyResults = styled.section`
   `}
 `;
 
-const Results = () => {
+const Results = ({setError, setLoading}) => {
   const firebase = useFirebase();
   const [db, setDb] = useState({});
   const [state, setState] = useState('');
-  const [loading, setLoading] = useState(true);
   const [vote] = useContext(VoteContext);
+  const [route, setRoute] = useContext(RouteContext); 
   const {current:type} = useRef(['parties', 'candidates', 'states', 'total', 'electoralCollege'])
   const { width } = useWindowDimensions();
   
   useEffect(() => {
     async function doStuff(){
+      setLoading(true);
       if(vote){
-        await setFirebaseData(firebase, vote).catch(err => console.log(err));
+        await setFirebaseData(firebase, vote).catch(err => handleError(err.message, setError, setRoute));
         localStorage.setItem('uid', vote.uid);
       }
-      await getFirebaseData(firebase, type, setDb).catch(err => console.log(err));
+      await getFirebaseData(firebase, type, setDb).catch(err => handleError(err.message, setError, setRoute));
       setLoading(false);
     }
     doStuff();
-  }, [firebase, type, vote])
+  }, [firebase, setError, setLoading, setRoute, type, vote])
 
   const electoral = returnElectoralVotes(db);
   const mapColor = returnMapColors(db);
@@ -202,9 +204,13 @@ const Results = () => {
           </PartyResults>
         </>
       }
-      {loading && <Loader />}
     </>
   )
+}
+
+Results.propTypes = {
+  setError: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 }
 
 export default Results
