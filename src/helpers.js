@@ -119,6 +119,18 @@ export function handleError(err, setError, setRoute) {
   setRoute('error')
 }
 
+export function checkUserExists(firestore, uid) {
+  return new Promise((resolve, reject) => {
+    firestore.users().where('uid', '==', uid).get()
+    .then(function(ref) {
+      ref.empty ? reject('User has not voted') : resolve(true);
+    }).catch(err => {
+      console.log(err);
+    });
+    
+  })
+}
+
 export function returnFullName(name) {
   return name === 'biden' ? 'Joe Biden' : 'Donald Trump';
 }
