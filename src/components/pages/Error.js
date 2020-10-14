@@ -28,11 +28,13 @@ const Error = ({error}) => {
       <>
         <h2>There has been an error.</h2>
         <h2>Please refresh and try again.</h2>
-        <ErrorBlock>
-          <h3>Error:</h3>
-          <h4>{error}</h4>
-          <h4>{error.includes('fetch') && `Make sure adblock is turned off.`}</h4>
-        </ErrorBlock>
+        {error && 
+          <ErrorBlock>
+            <h3>Error:</h3>
+            <h4>{error}</h4>
+            <h4>{error.includes('fetch') && `Make sure adblock is turned off.`}</h4>
+          </ErrorBlock>
+        }
       </>
     </Wrapper>
   )
