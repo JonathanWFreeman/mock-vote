@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {Button} from '../elements'
 import {fetchLocation, Below} from '../utilities'
-import {checkUserExists, handleError, wait} from '../../helpers'
+import {handleError, wait} from '../../helpers'
 
 const Wrapper = styled.section`
   margin: 0 2%;
@@ -40,6 +40,15 @@ const Login = ({setError, setLoading}) => {
   }
 
   useEffect(() => {
+    function checkUserExists(firestore, uid) {
+      return new Promise((resolve, reject) => {
+        firestore.users().where('uid', '==', uid).get()
+        .then(function(ref) {
+          ref.empty ? reject('User has not voted') : resolve(true);
+        }).catch((err) => handleError(err, setError, setRoute));   
+      })
+    } 
+    
     async function authHandler(authData) {
       if(authData.user !== null){
         const getUserId = authData.user.uid;
@@ -54,9 +63,12 @@ const Login = ({setError, setLoading}) => {
           setUserExists(false)
         }else{
           const userLocation = await fetchLocation().catch((err) => handleError(err, setError, setRoute));
-  
           if(userLocation){
-            if(userLocation.country_code !== 'US'){
+            if(userLocation.region_code.length === 0){
+              setError('Error getting region data')
+              setRoute('error')
+            }
+            else if(userLocation.country_code !== 'US'){
               setError('US residents only')
               setRoute('error')
             }else{
@@ -105,6 +117,7 @@ const Login = ({setError, setLoading}) => {
           <p>Facebook is only used to help prevent multiple votes being cast.</p>
           <p>No personal information is kept.</p>
         </Disclaimer>
+        <Button onClick={() => setRoute('results')}><p>Results</p></Button>
       </Wrapper>
     </>
   )
