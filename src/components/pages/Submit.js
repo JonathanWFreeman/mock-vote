@@ -1,14 +1,13 @@
 import React, {useContext} from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {VoteContext, RouteContext} from '../context'
 import {Button} from '../elements'
 import {returnFullName} from '../../helpers'
 import {ImageElement} from '../elements';
 import {FlexContainer} from '../utilities';
-
-function handleSubmit(setRoute, route) {
-  setRoute(route)
-}
+import { useFirebase } from '../firebase';
+import {setFirebaseData, handleError} from '../../helpers';
 
 function returnImage(ref){
   switch(ref){
@@ -58,11 +57,21 @@ const ImageContainer = styled.div`
   margin-top: 50px;
 `;
 
-const Submit = () => {
+const Submit = ({setError, setLoading}) => {
   const [vote] = useContext(VoteContext);
   const [route, setRoute] = useContext(RouteContext);
-
+  const firebase = useFirebase();
   const candidate = returnFullName(vote.candidate);
+
+  async function handleSubmit(setRoute, route) {
+    setLoading(true);
+    if(route === 'results'){
+      await setFirebaseData(firebase, vote).catch(err => handleError(err.message, setError, setRoute));
+      localStorage.setItem('voted', 'true');
+    }
+    setLoading(false);
+    setRoute(route)
+  }
   
   return (
     <>
@@ -91,6 +100,11 @@ const Submit = () => {
       </FlexContainer>
     </>
   )
+}
+
+Submit.propTypes = {
+  setError: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 }
 
 export default Submit
