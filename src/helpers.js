@@ -1,11 +1,11 @@
 import {RepublicanRed, DemocratBlue, BattlegroundPurple} from './Global';
 
-export async function setFirebaseData(firebase, {party, candidate, state, uid, email}) {
+export async function setFirebaseData(firebase, {party, candidate, state}) {
   const parties = firebase.parties().doc(party);
   const candidates = firebase.candidates().doc(candidate);
   const states = firebase.states().doc(state);
   const total = firebase.total().doc('total');
-  const user = firebase.users().doc(uid);
+  // const user = firebase.users().doc(uid);
   const batch = firebase.db.batch();
 
   // party
@@ -30,10 +30,10 @@ export async function setFirebaseData(firebase, {party, candidate, state, uid, e
   batch.set(total, {total: firebase.increment()}, {merge:true})
 
   // user
-  batch.set(user, {
-    email,
-    uid,
-  })
+  // batch.set(user, {
+  //   email,
+  //   uid,
+  // })
 
   // batch
   try{
