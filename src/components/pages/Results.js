@@ -154,10 +154,6 @@ const Results = ({setError, setLoading}) => {
   useEffect(() => {
     async function doStuff(){
       setLoading(true);
-      if(vote){
-        await setFirebaseData(firebase, vote).catch(err => handleError(err.message, setError, setRoute));
-        localStorage.setItem('uid', vote.uid);
-      }
       await getFirebaseData(firebase, type, setDb).catch(err => handleError(err.message, setError, setRoute));
       setLoading(false);
     }
